@@ -92,6 +92,7 @@ for i in df_csv.index:
                     pass
 
 MYSQL.insert_sales_data(install_sales_data)
+MYSQL.insert_store_data(install_store_data)
 
 #存入MySQL
 # print(install_store_data)
