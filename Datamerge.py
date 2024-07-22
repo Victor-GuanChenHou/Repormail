@@ -49,6 +49,7 @@ for i in df_csv.index:
                 sales_data={
                 'store_id':df_csv['store_id'][i],
                 'invoice_amt':(float(df_csv['invoice_amt'][i]*1)),
+                'total_customer':1,
                 'DATE':date_segmentation(df_csv['so_date'][i])
                 
                 }
@@ -66,6 +67,7 @@ for i in df_csv.index:
                     sales_data={
                     'store_id':df_csv['store_id'][i],
                     'invoice_amt':(float(df_csv['invoice_amt'][i]*1)),
+                    'total_customer':1,
                     'date':date_segmentation(df_csv['so_date'][i])
                     
                     }
