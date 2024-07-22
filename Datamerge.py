@@ -5,7 +5,9 @@ import csv
 import math
 import datetime 
 from openpyxl import load_workbook# 檢測編譯格式
-print(datetime.date(2020,1,2))
+import os
+import numpy as np
+import SQL_tra as MYSQL
 # import chardet
 # with open("./Origianldata/20240702235509.csv", 'rb') as f:
 #     result = chardet.detect(f.read())
@@ -23,75 +25,76 @@ def data_segmentation(name):
         rname=names
     return rname
 def date_segmentation(date):
-    print(date)
-    dates=date.split('/')
-    print(dates)
-    rdates=datetime.date(dates[0],dates[1],dates[2])
+    data=date.split(' ')
+    dates=data[0].split('/')
+    rdates=str(dates[0]+'-'+dates[1]+'-'+dates[2])
     return rdates
 ###選取原始資料檔
-df_csv = pd.read_csv("./Origianldata/20240702235509.csv", encoding='utf-16')
+folder_path = "./Origianldata"
+csv_files = [f for f in os.listdir(folder_path) if f.endswith('.csv')]
+df_csv = pd.read_csv("./Origianldata/"+str(csv_files[len(csv_files)-1]), encoding='utf-16')
 df_csv = pd.DataFrame(df_csv)
 df_csv = df_csv.drop_duplicates(subset='so_id', keep='last')
 
 install_data_column=[]
 install_store_data=[]
 install_sales_data=[]
-#print(df_csv.columns)
-# l=0
-# d=0
-# c=0
-# u=0
-# e=0
-for i in df_csv.index:
-    # if df_csv['store_id'][i]=='dc03022' and df_csv['payment_type'][i]=='LINE PAY':
-    #         l=l+df_csv['invoice_amt'][i]
-    # if df_csv['store_id'][i]=='dc03022' and df_csv['payment_type'][i]=='現金': 
-    #         c=c+df_csv['invoice_amt'][i]
-    # if df_csv['store_id'][i]=='dc03022' and df_csv['payment_type'][i]=='信用卡':       
-    #         d=d+df_csv['invoice_amt'][i]
-    # if df_csv['store_id'][i]=='dc03022' and df_csv['payment_type'][i]=='UE支付':       
-    #         u=u+df_csv['invoice_amt'][i]
-    # if df_csv['store_id'][i]=='dc03022' and df_csv['payment_type'][i]=='一卡通':       
-    #         e=e+df_csv['invoice_amt'][i]
 
-    if df_csv['so_type'][i]=='A' or df_csv['so_type'][i]=='B' :
+for i in df_csv.index:
+    if df_csv['so_type'][i]=='A'  and not np.isnan(df_csv['invoice_amt'][i]):
         storename=data_segmentation(df_csv['store_name'][i])
-        if df_csv['store_name'][i] not in install_data_column :
+        if df_csv['store_id'][i] not in install_data_column  :
             try:
                 
-                data={
+                sales_data={
                 'store_id':df_csv['store_id'][i],
-                'brand':storename[0],
-                'store_name':storename[1],
                 'invoice_amt':(float(df_csv['invoice_amt'][i]*1)),
-                'date':date_segmentation(df_csv['so_date'][i])
+                'DATE':date_segmentation(df_csv['so_date'][i])
+                
                 }
-                install_sales_data.append(data)
-                install_data_column.append(df_csv['store_name'][i])
-            except:
-                try:
-                    data={
+                store_data={
                     'store_id':df_csv['store_id'][i],
                     'brand':storename[0],
-                    'store_name':storename[1],
+                    'store_name':storename[1]
+
+                }
+                install_store_data.append(store_data)
+                install_sales_data.append(sales_data)
+                install_data_column.append(df_csv['store_id'][i])
+            except:
+                try:
+                    sales_data={
+                    'store_id':df_csv['store_id'][i],
                     'invoice_amt':(float(df_csv['invoice_amt'][i]*1)),
                     'date':date_segmentation(df_csv['so_date'][i])
+                    
+                    }
+                    store_data={
+                        'store_id':df_csv['store_id'][i],
+                        'brand':storename[0],
+                        'store_name':storename[1]
 
                     }
-                    install_sales_data.append(data)
-                    install_data_column.append(df_csv['store_name'][i])
+                    install_store_data.append(store_data)
+                    install_sales_data.append(sales_data)
+                    install_data_column.append(df_csv['store_id'][i])
                 except:
                     pass
         else:
             try:
-                index = install_data_column.index(df_csv['store_name'][i])
+                index = install_data_column.index(df_csv['store_id'][i])
                 install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
             except:
                 try:
-                    index = install_data_column.index(df_csv['store_name'][i])
+                    index = install_data_column.index(df_csv['store_id'][i])
                     install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
                 except:
                     pass
+
+MYSQL.insert_sales_data(install_sales_data)
+
+#存入MySQL
+# print(install_store_data)
 # print("LINE PAY")
 # print(l)
 # print("現金")
@@ -103,7 +106,7 @@ for i in df_csv.index:
 # print("一卡通")
 # print(e)
 # print("總和")
-print(install_sales_data)
+
 ###創建新資料檔案
 # df = pd.DataFrame(install_data)
 # df.to_excel("./output.xlsx", sheet_name='Sheet1', index=False)

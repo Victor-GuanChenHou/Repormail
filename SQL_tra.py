@@ -1,1 +1,21 @@
 import os
+from dotenv import load_dotenv
+load_dotenv()
+import pymysql
+host=os.getenv('SQLhost')
+user=os.getenv('SQLuser')
+password=os.getenv('SQLpassword')
+database=os.getenv('database')
+port=os.getenv('port')
+def insert_sales_data(data):
+    global host
+    global user
+    global password
+    pymysql.install_as_MySQLdb()
+    db=pymysql.connect(host=host,user=user,password=password,database=database,port=port)
+    cursor = db.cursor()
+    for i in range(len(data)):
+        sql = "INSERT INTO salesdata (store_id, invoice_amt, DATE) VALUES (%s, %s, %s)"
+        val = (str(data[i]['store_id']), str(data[i]['invoice_amt']), str(data[i]['DATE']))
+        cursor.execute(sql, val)
+
