@@ -1,15 +1,34 @@
 import pandas as pd
 import datetime
-
+import SQL_tra as MYSQL
 # 找前一天日期
 date = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(int(datetime.datetime.now().day-1))
 fileName ='./Senddata/'+ date + '_Report.xlsx'
-lastyear = str(int(datetime.datetime.now().year)-1) + '-' + str(datetime.datetime.now().month) + '-' + str(int(datetime.datetime.now().day)-1)
-print(lastyear)
+lastdate=datetime.date(int(datetime.datetime.now().year),int(datetime.datetime.now().month),int(datetime.datetime.now().day)-1)
+Mtd=datetime.date(int(datetime.datetime.now().year),int(datetime.datetime.now().month),1)
+Ytd=datetime.date(int(datetime.datetime.now().year),1,1)
+
+Plastdate=datetime.date(int(datetime.datetime.now().year)-1,int(datetime.datetime.now().month),int(datetime.datetime.now().day)-1)
+PMtd=datetime.date(int(datetime.datetime.now().year)-1,int(datetime.datetime.now().month),1)
+PYtd=datetime.date(int(datetime.datetime.now().year)-1,1,1)
+
+# print(lastdate)
+# print(Mtd)
+# print(Ytd)
+# print(Plastdate)
+# print(PMtd)
+# print(PYtd)
+brand=['杏']
+CYdata=MYSQL.searchdata(brand[0],lastdate,lastdate)
+PYdata=MYSQL.searchdata(brand[0],Plastdate,Plastdate)
+CYMTDdata=MYSQL.searchdata(brand[0],Mtd,lastdate)
+PYMTDdata=MYSQL.searchdata(brand[0],PMtd,Plastdate)
+CYYTDdata=MYSQL.searchdata(brand[0],Ytd,lastdate)
+PYYTDdata=MYSQL.searchdata(brand[0],PYtd,Plastdate)
 # 數據資料
 data = {
     "Category": ["全市场 - Total", "SS WPSA", "北一区 - Total", "SS WPSA", "台北仁爱", "台北八德", "台北内湖", "台北信义三", "大直爱买", "台北敦南二"],
-    "Daily Sales CY": [6602526, 369192, 2033880, 398822, 50433, 55168, 78179, 44828, 27471, 81921],
+    "Daily Sales CY": CYdata[3],
     "Daily Sales CY (不含早餐)": [6070351, 339605, 1861736, 364574, 44251, 50665, 71951, 38082, 24771, 76361],
     "Daily Sales PY": ["########", 935570, 4528552, 897720, 100261, 85292, 191659, 81936, 103847, 174783],
     "Daily TC CY": [38191, 2143, 12031, 2376, 271, 332, 414, 288, 297, 433],

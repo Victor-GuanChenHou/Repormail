@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 load_dotenv()
 import pymysql
+import datetime
 host=os.getenv('SQLhost')
 user=os.getenv('SQLuser')
 password=os.getenv('SQLpassword')
@@ -35,7 +36,7 @@ def insert_store_data(data):
         db.commit()
     db.close()
     
-def searchdata(start_time,end_time):
+def searchdata(brand,start_time,end_time):
     global host
     global user
     global password
@@ -43,9 +44,9 @@ def searchdata(start_time,end_time):
     try:
         db=pymysql.connect(host=host,user=user,password=password,database=database,port=port)
         cursor = db.cursor()
-        cursor.execute("SELECT store_id FROM storedata")
+        cursor.execute("SELECT store_id FROM storedata WHERE brand = %s",brand)
         storeids = cursor.fetchall()
-
+        data=[]
         for storeid_tuple in storeids:
                 storeid = storeid_tuple[0]
 
@@ -55,7 +56,7 @@ def searchdata(start_time,end_time):
                     sd.store_id, 
                     sd.store_name, 
                     sa.DATE, 
-                    sa.invoice_amt
+                    SUM(sa.sale_amount) AS total_sales
                 FROM 
                     storedata sd
                 JOIN 
@@ -66,18 +67,14 @@ def searchdata(start_time,end_time):
                     sd.store_id = %s
                     AND sa.DATE BETWEEN %s AND %s;
                 """
-                cursor.execute(query, (storeid, start_date, end_date))
+                cursor.execute(query, (storeid, start_time, end_time))
                 result = cursor.fetchall()
 
                 # 處理結果，例如打印或者存儲到文件
                 for row in result:
-                    print(row)
-    
+                    data.append(row)
+        data=list(zip(*data))
+        return data
     finally:
         db.close()
 
-# 查詢所有storeid在2023年的銷售數據
-start_date = date(2023, 1, 1)
-end_date = date(2023, 12, 31)
-
-fetch_all_store_sales(start_date, end_date)
