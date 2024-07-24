@@ -17,8 +17,8 @@ def insert_sales_data(data):
     cursor = db.cursor()
     val=[]
     for i in range(len(data)):
-         val.append((str(data[i]['store_id']), str(data[i]['invoice_amt']), str(data[i]['DATE'])))
-    sql = "INSERT INTO salesdata (store_id, invoice_amt, DATE) VALUES (%s, %s, %s)"
+         val.append((str(data[i]['store_id']),int(data[i]['total_customer']), str(data[i]['invoice_amt']), str(data[i]['DATE'])))
+    sql = "INSERT INTO salesdata (store_id, total_customer,invoice_amt, DATE) VALUES (%s, %s,%s, %s)"
     cursor.executemany(sql, val)
     db.commit()
     db.close()
@@ -30,10 +30,13 @@ def insert_store_data(data):
     db=pymysql.connect(host=host,user=user,password=password,database=database,port=port)
     cursor = db.cursor()
     for i in range(len(data)):
-        val=(str(data[i]['store_id']), str(data[i]['brand']), str(data[i]['store_name']))
-        sql = "INSERT INTO storedata (store_id, brand, store_name) VALUES (%s, %s, %s)"
-        cursor.execute(sql, val)
-        db.commit()
+        try:
+            val=(str(data[i]['store_id']), str(data[i]['brand']), str(data[i]['store_name']))
+            sql = "INSERT INTO storedata (store_id, brand, store_name) VALUES (%s, %s, %s)"
+            cursor.execute(sql, val)
+            db.commit()
+        except:
+             pass
     db.close()
     
 def searchdata(brand,start_time,end_time):
@@ -56,7 +59,7 @@ def searchdata(brand,start_time,end_time):
                     sd.store_id, 
                     sd.store_name, 
                     sa.DATE, 
-                    SUM(sa.sale_amount) AS total_sales
+                    SUM(sa.sale_amount) AS total_sales,
                     SUM(sa.total_customer) AS total_customers
                 FROM 
                     storedata sd

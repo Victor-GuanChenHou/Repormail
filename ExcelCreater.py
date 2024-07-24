@@ -20,10 +20,34 @@ PYtd=datetime.date(int(datetime.datetime.now().year)-1,1,1)
 # print(PYtd)
 def datamerge(CYdata,PYdata):
     data=[]
+    CY_unique=[]
     for i in range(len(CYdata)):
+        Status=False
         for j in range(len(PYdata)):
             if CYdata[i][0]==PYdata[j][0]:
+                # id name cysales pysales index TC TC_P TC_index TA TA_P TA_index
+                thedata=(CYdata[i][0],CYdata[i][1],float(CYdata[i][3]),float(PYdata[j][3]),float(CYdata[i][3])/float(PYdata[j][3]),float(CYdata[i][4]),float(PYdata[j][4]),float(CYdata[i][4])/float(PYdata[j][4]),float(CYdata[i][3])/float(CYdata[i][4]),float(PYdata[j][3])/float(PYdata[j][4]),(float(CYdata[i][3])/float(CYdata[i][4]))/(float(PYdata[j][3])/float(PYdata[j][4])))
+                data.append(thedata)
+                Status=True
+                if PYdata[j] in PYdata:
+                    PYdata.remove(PYdata[j]) 
                 break
+        if Status==False:
+            CY_unique.append(CYdata[i])
+    try:
+        for i in range(len(CY_unique)):
+            thedata=(CY_unique[i][0],CY_unique[i][1],float(CY_unique[i][3]),None,None,float(CY_unique[i][4]),None,None,float(CY_unique[i][3])/float(CY_unique[i][4]),None,None)
+            data.append(thedata)
+    except:
+        pass
+    try:
+        for i in range(len(PYdata)):
+            thedata=(PYdata[i][0],PYdata[i][1],None,float(PYdata[j][3]),None,None,float(PYdata[j][4]),None,None,float(PYdata[j][3])/float(PYdata[j][4]),None)
+            data.append(thedata)
+    except:
+        pass
+    data=pd.DataFrame(data)
+    return data
 brand=['杏']
 CYdata=MYSQL.searchdata(brand[0],lastdate,lastdate)
 PYdata=MYSQL.searchdata(brand[0],Plastdate,Plastdate)
@@ -32,10 +56,8 @@ PYMTDdata=MYSQL.searchdata(brand[0],PMtd,Plastdate)
 CYYTDdata=MYSQL.searchdata(brand[0],Ytd,lastdate)
 PYYTDdata=MYSQL.searchdata(brand[0],PYtd,Plastdate)
 # 數據資料
-CYdata=[['台北','台南'],[0,1],[2,3]]
-PYdata=[['高雄','台南'],[6,5],[8,7]]
-data=[['台北','台南','高雄'],[0,1,None],[2,3,None],[None,5,6],[None,7,8],[0/None,1/5,None/6],[2/None,3/7,None/8],[0/2,1/3,None/None],[None/None,5/7,6/8],[(0/None)/(2/None),(1/5)/(3/7),(None/6)/(None/8)]]
-cy py tc pytc ta pcta index tcindex taindex
+
+
 data = {
     "Category": CYdata[0],
     "Daily Sales CY": CYdata[3],
