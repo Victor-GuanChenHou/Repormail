@@ -57,6 +57,7 @@ def searchdata(brand,start_time,end_time):
                     sd.store_name, 
                     sa.DATE, 
                     SUM(sa.sale_amount) AS total_sales
+                    SUM(sa.total_customer) AS total_customers
                 FROM 
                     storedata sd
                 JOIN 

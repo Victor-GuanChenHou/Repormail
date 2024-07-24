@@ -86,10 +86,14 @@ for i in df_csv.index:
             try:
                 index = install_data_column.index(df_csv['store_id'][i])
                 install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
+                install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
+
             except:
                 try:
                     index = install_data_column.index(df_csv['store_id'][i])
                     install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
+                    install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
+
                 except:
                     pass
 

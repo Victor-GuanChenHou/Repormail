@@ -18,6 +18,12 @@ PYtd=datetime.date(int(datetime.datetime.now().year)-1,1,1)
 # print(Plastdate)
 # print(PMtd)
 # print(PYtd)
+def datamerge(CYdata,PYdata):
+    data=[]
+    for i in range(len(CYdata)):
+        for j in range(len(PYdata)):
+            if CYdata[i][0]==PYdata[j][0]:
+                break
 brand=['杏']
 CYdata=MYSQL.searchdata(brand[0],lastdate,lastdate)
 PYdata=MYSQL.searchdata(brand[0],Plastdate,Plastdate)
@@ -26,18 +32,39 @@ PYMTDdata=MYSQL.searchdata(brand[0],PMtd,Plastdate)
 CYYTDdata=MYSQL.searchdata(brand[0],Ytd,lastdate)
 PYYTDdata=MYSQL.searchdata(brand[0],PYtd,Plastdate)
 # 數據資料
+CYdata=[['台北','台南'],[0,1],[2,3]]
+PYdata=[['高雄','台南'],[6,5],[8,7]]
+data=[['台北','台南','高雄'],[0,1,None],[2,3,None],[None,5,6],[None,7,8],[0/None,1/5,None/6],[2/None,3/7,None/8],[0/2,1/3,None/None],[None/None,5/7,6/8],[(0/None)/(2/None),(1/5)/(3/7),(None/6)/(None/8)]]
+cy py tc pytc ta pcta index tcindex taindex
 data = {
-    "Category": ["全市场 - Total", "SS WPSA", "北一区 - Total", "SS WPSA", "台北仁爱", "台北八德", "台北内湖", "台北信义三", "大直爱买", "台北敦南二"],
+    "Category": CYdata[0],
     "Daily Sales CY": CYdata[3],
-    "Daily Sales CY (不含早餐)": [6070351, 339605, 1861736, 364574, 44251, 50665, 71951, 38082, 24771, 76361],
-    "Daily Sales PY": ["########", 935570, 4528552, 897720, 100261, 85292, 191659, 81936, 103847, 174783],
-    "Daily TC CY": [38191, 2143, 12031, 2376, 271, 332, 414, 288, 297, 433],
-    "Daily TC CY (不含早餐)": [78273, 4274, 20999, 4172, 444, 420, 389, 444, 608, 783],
-    "Daily TC PY": [75180, 4107, 20244, 4028, 444, 398, 389, 444, 608, 744],
-    "Daily TA CY": [147.6, 147.2, 142.0, 140.7, 143.7, 137.6, 131.9, 111.2, 111.8, 157.8],
-    "Daily TA CY (不含早餐)": [158.9, 158.5, 154.7, 153.5, 163.3, 152.6, 147.8, 128.9, 133.3, 168.7],
-    "Daily TA PY": [223.2, 223.3, 215.7, 215.2, 225.8, 208.2, 287.8, 132.9, 164.1, 223.2],
-    "Daily TA PY (不含早餐)": [227.8, 227.8, 219.8, 219.1, 227.8, 214.3, 294.5, 133.9, 163.1, 229.0]
+    "Daily Sales PY": PYdata[3],
+    "Daily Sales Index":
+    "Daily TC CY":
+    "Daily TC PY":
+    "Daily TC Index":
+    "Daily TA CY":
+    "Daily TA PY":
+    "Daily TA Index":
+    "MTD Sales CY": CYMTDdata[3],
+    "MTD Sales PY":PYMTDdata[3],
+    "MTD Sales Index": 
+    "MTD TC CY":
+    "MTD TC PY":
+    "MTD TC Index":
+    "MTD TA CY":
+    "MTD TA PY":
+    "MTD TA Index":
+    "YTD Sales CY": CYYTDdata[3],
+    "YTD Sales PY": PYYTDdata[3],
+    "YTD Sales Index": 
+    "YTD TC CY":
+    "YTD TC PY":
+    "YTD TC Index":
+    "YTD TA CY":
+    "YTD TA PY":
+    "YTD TA Index":
 }
 
 # 創建dataframe
