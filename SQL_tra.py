@@ -77,7 +77,6 @@ def searchdata(brand,start_time,end_time):
                 # 處理結果，例如打印或者存儲到文件
                 for row in result:
                     data.append(row)
-        data=list(zip(*data))
         return data
     finally:
         db.close()

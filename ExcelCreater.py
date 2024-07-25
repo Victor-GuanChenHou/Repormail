@@ -26,7 +26,17 @@ def datamerge(CYdata,PYdata):
         for j in range(len(PYdata)):
             if CYdata[i][0]==PYdata[j][0]:
                 # id name cysales pysales index TC TC_P TC_index TA TA_P TA_index
-                thedata=(CYdata[i][0],CYdata[i][1],float(CYdata[i][3]),float(PYdata[j][3]),float(CYdata[i][3])/float(PYdata[j][3]),float(CYdata[i][4]),float(PYdata[j][4]),float(CYdata[i][4])/float(PYdata[j][4]),float(CYdata[i][3])/float(CYdata[i][4]),float(PYdata[j][3])/float(PYdata[j][4]),(float(CYdata[i][3])/float(CYdata[i][4]))/(float(PYdata[j][3])/float(PYdata[j][4])))
+                thedata=(
+                    CYdata[i][0],CYdata[i][1],
+                    float(CYdata[i][3]),
+                    float(PYdata[j][3]),
+                    float(CYdata[i][3])/float(PYdata[j][3]),
+                    int(int(CYdata[i][4])),
+                    int(int(PYdata[j][4])),
+                    float(CYdata[i][4])/float(PYdata[j][4]),
+                    float(CYdata[i][3])/float(CYdata[i][4]),
+                    float(PYdata[j][3])/float(PYdata[j][4]),
+                    (float(CYdata[i][3])/float(CYdata[i][4]))/(float(PYdata[j][3])/float(PYdata[j][4])))
                 data.append(thedata)
                 Status=True
                 if PYdata[j] in PYdata:
@@ -36,17 +46,39 @@ def datamerge(CYdata,PYdata):
             CY_unique.append(CYdata[i])
     try:
         for i in range(len(CY_unique)):
-            thedata=(CY_unique[i][0],CY_unique[i][1],float(CY_unique[i][3]),None,None,float(CY_unique[i][4]),None,None,float(CY_unique[i][3])/float(CY_unique[i][4]),None,None)
+            thedata=(
+                CY_unique[i][0],
+                CY_unique[i][1],
+                float(CY_unique[i][3]),
+                None,
+                None,
+                int(CY_unique[i][4]),
+                None,
+                None,
+                float(CY_unique[i][3])/float(CY_unique[i][4]),
+                None,
+                None)
             data.append(thedata)
     except:
         pass
     try:
         for i in range(len(PYdata)):
-            thedata=(PYdata[i][0],PYdata[i][1],None,float(PYdata[j][3]),None,None,float(PYdata[j][4]),None,None,float(PYdata[j][3])/float(PYdata[j][4]),None)
+            thedata=(
+                PYdata[i][0],
+                PYdata[i][1],
+                None,float(PYdata[i][3]),
+                None,
+                None,
+                int(PYdata[i][4]),
+                None,
+                None,
+                float(PYdata[i][3])/float(PYdata[i][4]),None)
             data.append(thedata)
     except:
         pass
     data=pd.DataFrame(data)
+    data[5] = data[5].astype('Int64')
+    data[6] = data[6].astype('Int64')
     return data
 brand=['杏']
 CYdata=MYSQL.searchdata(brand[0],lastdate,lastdate)
@@ -56,37 +88,39 @@ PYMTDdata=MYSQL.searchdata(brand[0],PMtd,Plastdate)
 CYYTDdata=MYSQL.searchdata(brand[0],Ytd,lastdate)
 PYYTDdata=MYSQL.searchdata(brand[0],PYtd,Plastdate)
 # 數據資料
-
+daily_data=datamerge(CYdata,PYdata)
+MTD_data=datamerge(CYMTDdata,PYMTDdata)
+YTD_data=datamerge(CYYTDdata,PYYTDdata)
 
 data = {
-    "Category": CYdata[0],
-    "Daily Sales CY": CYdata[3],
-    "Daily Sales PY": PYdata[3],
-    "Daily Sales Index":
-    "Daily TC CY":
-    "Daily TC PY":
-    "Daily TC Index":
-    "Daily TA CY":
-    "Daily TA PY":
-    "Daily TA Index":
-    "MTD Sales CY": CYMTDdata[3],
-    "MTD Sales PY":PYMTDdata[3],
-    "MTD Sales Index": 
-    "MTD TC CY":
-    "MTD TC PY":
-    "MTD TC Index":
-    "MTD TA CY":
-    "MTD TA PY":
-    "MTD TA Index":
-    "YTD Sales CY": CYYTDdata[3],
-    "YTD Sales PY": PYYTDdata[3],
-    "YTD Sales Index": 
-    "YTD TC CY":
-    "YTD TC PY":
-    "YTD TC Index":
-    "YTD TA CY":
-    "YTD TA PY":
-    "YTD TA Index":
+    "Category": daily_data[1],
+    "Daily Sales CY": daily_data[2],
+    "Daily Sales PY": daily_data[3],
+    "Daily Sales Index":daily_data[4],
+    "Daily TC CY":daily_data[5],
+    "Daily TC PY":daily_data[6],
+    "Daily TC Index":daily_data[7],
+    "Daily TA CY":daily_data[8],
+    "Daily TA PY":daily_data[9],
+    "Daily TA Index":daily_data[10],
+    "MTD Sales CY": MTD_data[2],
+    "MTD Sales PY":MTD_data[3],
+    "MTD Sales Index": MTD_data[4],
+    "MTD TC CY":MTD_data[5],
+    "MTD TC PY":MTD_data[6],
+    "MTD TC Index":MTD_data[7],
+    "MTD TA CY":MTD_data[8],
+    "MTD TA PY":MTD_data[9],
+    "MTD TA Index":MTD_data[10],
+    "YTD Sales CY": YTD_data[2],
+    "YTD Sales PY": YTD_data[3],
+    "YTD Sales Index": YTD_data[4],
+    "YTD TC CY":YTD_data[5],
+    "YTD TC PY":YTD_data[6],
+    "YTD TC Index":YTD_data[7],
+    "YTD TA CY":YTD_data[8],
+    "YTD TA PY":YTD_data[9],
+    "YTD TA Index":YTD_data[10],
 }
 
 # 創建dataframe
