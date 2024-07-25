@@ -79,52 +79,54 @@ def datamerge(CYdata,PYdata):
     data=pd.DataFrame(data)
     data[5] = data[5].astype('Int64')
     data[6] = data[6].astype('Int64')
-    return data
-brand=['杏']
-CYdata=MYSQL.searchdata(brand[0],lastdate,lastdate)
-PYdata=MYSQL.searchdata(brand[0],Plastdate,Plastdate)
-CYMTDdata=MYSQL.searchdata(brand[0],Mtd,lastdate)
-PYMTDdata=MYSQL.searchdata(brand[0],PMtd,Plastdate)
-CYYTDdata=MYSQL.searchdata(brand[0],Ytd,lastdate)
-PYYTDdata=MYSQL.searchdata(brand[0],PYtd,Plastdate)
-# 數據資料
-daily_data=datamerge(CYdata,PYdata)
-MTD_data=datamerge(CYMTDdata,PYMTDdata)
-YTD_data=datamerge(CYYTDdata,PYYTDdata)
+    return 
+brand=['杏','大阪王將','勝牛','段純貞', '橋村']
+df={}
+for i in range(len(brand)):
+    CYdata=MYSQL.searchdata(brand[i],lastdate,lastdate)
+    PYdata=MYSQL.searchdata(brand[i],Plastdate,Plastdate)
+    CYMTDdata=MYSQL.searchdata(brand[i],Mtd,lastdate)
+    PYMTDdata=MYSQL.searchdata(brand[i],PMtd,Plastdate)
+    CYYTDdata=MYSQL.searchdata(brand[i],Ytd,lastdate)
+    PYYTDdata=MYSQL.searchdata(brand[i],PYtd,Plastdate)
+    # 數據資料
+    daily_data=datamerge(CYdata,PYdata)
+    MTD_data=datamerge(CYMTDdata,PYMTDdata)
+    YTD_data=datamerge(CYYTDdata,PYYTDdata)
 
-data = {
-    "Category": daily_data[1],
-    "Daily Sales CY": daily_data[2],
-    "Daily Sales PY": daily_data[3],
-    "Daily Sales Index":daily_data[4],
-    "Daily TC CY":daily_data[5],
-    "Daily TC PY":daily_data[6],
-    "Daily TC Index":daily_data[7],
-    "Daily TA CY":daily_data[8],
-    "Daily TA PY":daily_data[9],
-    "Daily TA Index":daily_data[10],
-    "MTD Sales CY": MTD_data[2],
-    "MTD Sales PY":MTD_data[3],
-    "MTD Sales Index": MTD_data[4],
-    "MTD TC CY":MTD_data[5],
-    "MTD TC PY":MTD_data[6],
-    "MTD TC Index":MTD_data[7],
-    "MTD TA CY":MTD_data[8],
-    "MTD TA PY":MTD_data[9],
-    "MTD TA Index":MTD_data[10],
-    "YTD Sales CY": YTD_data[2],
-    "YTD Sales PY": YTD_data[3],
-    "YTD Sales Index": YTD_data[4],
-    "YTD TC CY":YTD_data[5],
-    "YTD TC PY":YTD_data[6],
-    "YTD TC Index":YTD_data[7],
-    "YTD TA CY":YTD_data[8],
-    "YTD TA PY":YTD_data[9],
-    "YTD TA Index":YTD_data[10],
-}
+    data = {
+        "": daily_data[1],
+        "Daily Sales CY": daily_data[2],
+        "Daily Sales PY": daily_data[3],
+        "Daily Sales Index":daily_data[4],
+        "Daily TC CY":daily_data[5],
+        "Daily TC PY":daily_data[6],
+        "Daily TC Index":daily_data[7],
+        "Daily TA CY":daily_data[8],
+        "Daily TA PY":daily_data[9],
+        "Daily TA Index":daily_data[10],
+        "MTD Sales CY": MTD_data[2],
+        "MTD Sales PY":MTD_data[3],
+        "MTD Sales Index": MTD_data[4],
+        "MTD TC CY":MTD_data[5],
+        "MTD TC PY":MTD_data[6],
+        "MTD TC Index":MTD_data[7],
+        "MTD TA CY":MTD_data[8],
+        "MTD TA PY":MTD_data[9],
+        "MTD TA Index":MTD_data[10],
+        "YTD Sales CY": YTD_data[2],
+        "YTD Sales PY": YTD_data[3],
+        "YTD Sales Index": YTD_data[4],
+        "YTD TC CY":YTD_data[5],
+        "YTD TC PY":YTD_data[6],
+        "YTD TC Index":YTD_data[7],
+        "YTD TA CY":YTD_data[8],
+        "YTD TA PY":YTD_data[9],
+        "YTD TA Index":YTD_data[10],
+    }
 
-# 創建dataframe
-df = pd.DataFrame(data)
+    # 創建dataframe
+    df[brand[i]]=(pd.DataFrame(data))
 
 
 with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
@@ -133,10 +135,10 @@ with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
     YTD='(1/1~'+ str(datetime.datetime.now().month)+'/'+ str(int(datetime.datetime.now().day)-1)+')'
     print(MTD)
     print(YTD)
-    for sheet_name in sheet_names:
-        df.to_excel(writer, sheet_name=sheet_name, index=False, startrow=1)
+    for i in range(len(sheet_names)):
+        df[brand[i]].to_excel(writer, sheet_name=sheet_names[i], index=False, startrow=1)
         workbook  = writer.book
-        worksheet = writer.sheets[sheet_name]
+        worksheet = writer.sheets[sheet_names[i]]
         
         # 合併儲存格
         worksheet.merge_range('B1:D1', 'Daily Sales', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800000','font_color': '#FFFFFF'}))
