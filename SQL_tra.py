@@ -47,6 +47,7 @@ def searchdata(brand,start_time,end_time):
     try:
         db=pymysql.connect(host=host,user=user,password=password,database=database,port=port)
         cursor = db.cursor()
+        cursor.execute("SET SESSION sql_mode=(SELECT REPLACE(@@SESSION.sql_mode,'ONLY_FULL_GROUP_BY',''));")
         cursor.execute("SELECT store_id FROM storedata WHERE brand = %s",brand)
         storeids = cursor.fetchall()
         data=[]
@@ -70,6 +71,7 @@ def searchdata(brand,start_time,end_time):
                 WHERE 
                     sd.store_id = %s
                     AND sa.DATE BETWEEN %s AND %s;
+
                 """
                 cursor.execute(query, (storeid, start_time, end_time))
                 result = cursor.fetchall()
