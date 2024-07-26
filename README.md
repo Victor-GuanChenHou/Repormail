@@ -30,23 +30,37 @@ port='example'
 ### Program Introduction & Notice
 #### SFTPgetdata
 - Nas connect:
-![image](https://hackmd.io/_uploads/S1yM9igFC.png)
+
+![upload_5f575d7cf36c24e72051b26ea0d062b6](https://github.com/user-attachments/assets/5f6d17d1-a7fb-4b8e-973c-0bc331c347d6)
+
 #### Datamerge
 - File reading path
-![image](https://hackmd.io/_uploads/rJp73sxFA.png)
+
+![upload_326a766f7a545b2a954c2fd33e7863ba](https://github.com/user-attachments/assets/4da0bbf5-0ae1-4beb-8ad6-1c79b8d42646)
+
 #### ExcelCreater
 - File storage path
-![image](https://hackmd.io/_uploads/rynh2sgYR.png)
+
+![upload_6fa45b518707a75aab1e1264d64990b2](https://github.com/user-attachments/assets/b67ad1c6-cbe2-4dbd-8338-4003e8abf818)
+
 #### Reportmail
 - Mail Sender credential
-![image](https://hackmd.io/_uploads/H1AXpogt0.png)
+
+![螢幕擷取畫面 2024-07-26 125840](https://github.com/user-attachments/assets/dc3ffc81-4c1a-4758-8aad-d9c3def79095)
+
 - SMTP server
-![image](https://hackmd.io/_uploads/ByhT6ilKC.png)
-- Receiver
-![image](https://hackmd.io/_uploads/r1_bRieKA.png)
+
+![螢幕擷取畫面 2024-07-26 130148](https://github.com/user-attachments/assets/bc578691-7585-4909-b132-90bc5d6b1508)
+
+- Receive
+  
+![螢幕擷取畫面 2024-07-26 130343](https://github.com/user-attachments/assets/a970041c-178d-4bdc-ae96-3f45a9fcd614)
+
 #### SQL_tra
-- SQL logging 
-![image](https://hackmd.io/_uploads/HyF_CieKC.png)
+- SQL logging
+
+![螢幕擷取畫面 2024-07-26 130408](https://github.com/user-attachments/assets/e1fc54fb-d140-4c67-8487-b1ff9686e7b9)
+
 
 
 
