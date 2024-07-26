@@ -82,7 +82,7 @@ def datamerge(CYdata,PYdata):
     data[5] = data[5].astype('Int64')
     data[6] = data[6].astype('Int64')
     return data
-brand=['杏','大阪王將','勝牛','段純貞', '橋村']
+brand=['杏','大阪王將','勝牛','段純貞', '橋村','杏子小食堂']
 df={}
 for i in range(len(brand)):
     CYdata=MYSQL.searchdata(brand[i],lastdate,lastdate)
@@ -132,7 +132,7 @@ for i in range(len(brand)):
 
 
 with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
-    sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村']
+    sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
     MTD= '('+str(datetime.datetime.now().month) + '/1~'+ str(datetime.datetime.now().month)+'/'+ str(int(datetime.datetime.now().day)-1)+')'
     YTD='(1/1~'+ str(datetime.datetime.now().month)+'/'+ str(int(datetime.datetime.now().day)-1)+')'
     print(MTD)
