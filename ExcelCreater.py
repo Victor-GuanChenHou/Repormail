@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# coding: utf-8
 import pandas as pd
 import datetime
 import SQL_tra as MYSQL
@@ -79,7 +81,7 @@ def datamerge(CYdata,PYdata):
     data=pd.DataFrame(data)
     data[5] = data[5].astype('Int64')
     data[6] = data[6].astype('Int64')
-    return 
+    return data
 brand=['杏','大阪王將','勝牛','段純貞', '橋村']
 df={}
 for i in range(len(brand)):
@@ -95,7 +97,7 @@ for i in range(len(brand)):
     YTD_data=datamerge(CYYTDdata,PYYTDdata)
 
     data = {
-        "": daily_data[1],
+        "Category": daily_data[1],
         "Daily Sales CY": daily_data[2],
         "Daily Sales PY": daily_data[3],
         "Daily Sales Index":daily_data[4],

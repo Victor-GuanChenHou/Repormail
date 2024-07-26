@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart
 import logging
 from dotenv import load_dotenv
 import os
+import datetime
 load_dotenv()
 logging.basicConfig(
     filename='report_mail.log',
@@ -35,10 +36,13 @@ password = os.getenv('mailpassword')
 
 
 #傳送檔案
-
-filepath='./DailyReport.xlsx'
-filename='DailyReport.xlsx'
-
+try:
+    date = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(int(datetime.datetime.now().day-1))
+    filepath='./Senddata/'+ date + '_Report.xlsx'
+    filename= date + '_Report.xlsx'
+except Exception as e:
+    print(f"郵件傳送失敗: {e}")
+    logging.error(f'Send Mail Error: {e}')
 # 發送郵件
 try:
     for i in range(len(to_addr)):
