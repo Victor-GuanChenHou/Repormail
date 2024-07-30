@@ -33,7 +33,6 @@ def date_segmentation(date):
 datadate = str(datetime.datetime.now().year)  + str(datetime.datetime.now().month).zfill(2)  + str(int(datetime.datetime.now().day-1)).zfill(2)
 folder_path = "./Origianldata"
 csv_files = [f for f in os.listdir(folder_path) if f.endswith('.csv')and f[:8]==datadate]
-print(csv_files)
 df_csv = pd.read_csv("./Origianldata/"+str(csv_files[len(csv_files)-1]), encoding='utf-16')
 df_csv = pd.DataFrame(df_csv)
 df_csv = df_csv.drop_duplicates(subset='so_id', keep='last')
