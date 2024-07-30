@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import sys
 import logging
+import datetime
 load_dotenv()
 logging.basicConfig(
     filename='sftp.log',
@@ -34,7 +35,10 @@ sftp.chdir("All")#在Nas All的資料夾拿資料
 folder_file_list = sftp.listdir()
 
 #拿取前一天資料
-remote_filename = folder_file_list[len(folder_file_list)-1]
+date = str(datetime.datetime.now().year)  + str(datetime.datetime.now().month).zfill(2)  + str(int(datetime.datetime.now().day-1)).zfill(2)
+for i in range(len(folder_file_list)):
+    if date == folder_file_list[i][:8]:
+        remote_filename=folder_file_list[i]
 local_filename = str(folder_file_list[len(folder_file_list)-1][0:8])+'.csv'#將儲存的資料轉成前一天日期.csv
 sftp.get(remote_filename, './Origianldata/'+str(local_filename))
 #拿Nas取所有資料
