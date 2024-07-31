@@ -84,4 +84,22 @@ def searchdata(brand,start_time,end_time):
         return data
     finally:
         db.close()
-
+def searchname(storeid):
+    global host
+    global user
+    global password
+    pymysql.install_as_MySQLdb()
+    try:
+        db = pymysql.connect(host=host, user=user, password=password, database=database, port=port)
+        cursor = db.cursor()
+        cursor.execute("SET SESSION sql_mode=(SELECT REPLACE(@@SESSION.sql_mode,'ONLY_FULL_GROUP_BY',''));")
+        data = []
+        for i in range(len(storeid)):
+            cursor.execute("SELECT store_name FROM storedata WHERE store_id = %s", (storeid[i]))
+            names = cursor.fetchall()  
+            for name_tuple in names:
+                name = name_tuple[0]
+                data.append(name)
+        return data
+    finally:
+        db.close()

@@ -23,28 +23,28 @@ PYtd=datetime.date(int(datetime.datetime.now().year)-1,1,1)
 def datatitle(CYdata,PYdata,CYMTDdata,PYMTDdata,CYYTDdata,PYYTDdata):
     data=[]
     for i in range(len(CYdata)):
-        if CYdata[i][0] not in data and CYdata[i][0]!=None:
+        if CYdata[i][0] not in data and CYdata[i][0] is not None:
             data.append(CYdata[i][0])
     for i in range(len(PYdata)):
-        if PYdata[i][0] not in data and PYdata[i][0]!=None:
+        if PYdata[i][0] not in data and PYdata[i][0] is not None:
             data.append(PYdata[i][0])  
     for i in range(len(CYMTDdata)):
-        if CYMTDdata[i][0] not in data and CYMTDdata[i][0]!=None:
+        if CYMTDdata[i][0] not in data and CYMTDdata[i][0] is not None:
             data.append(CYMTDdata[i][0])     
     for i in range(len(PYMTDdata)):
-        if PYMTDdata[i][0] not in data and PYMTDdata[i][0]!=None:
+        if PYMTDdata[i][0] not in data and PYMTDdata[i][0] is not None:
             data.append(PYMTDdata[i][0])      
     for i in range(len(CYYTDdata)):
-        if CYYTDdata[i][0] not in data and CYYTDdata[i][0]!=None:
+        if CYYTDdata[i][0] not in data and CYYTDdata[i][0] is not None:
             data.append(CYYTDdata[i][0])   
     for i in range(len(PYYTDdata)):
-        if PYYTDdata[i][0] not in data and PYYTDdata[i][0]!=None:
+        if PYYTDdata[i][0] not in data and PYYTDdata[i][0] is not None:
             data.append(PYYTDdata[i][0])     
     return data
 def datamerge(title,CYdata,PYdata):
     data=[]
     CYid=[i[0] for i in CYdata]
-    PYid=[i[0] for i in CYdata]
+    PYid=[i[0] for i in PYdata]
     for i in range(len(title)):
          CYpositions = [index for index, value in enumerate(CYid) if value == title[i]]
          PYpositions = [index for index, value in enumerate(PYid) if value == title[i]]
