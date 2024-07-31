@@ -24,22 +24,22 @@ def datatitle(CYdata,PYdata,CYMTDdata,PYMTDdata,CYYTDdata,PYYTDdata):
     data=[]
     for i in range(len(CYdata)):
         if CYdata[i][0] not in data and CYdata[i][0]!=None:
-            data.append[CYdata[i][0]]
+            data.append(CYdata[i][0])
     for i in range(len(PYdata)):
         if PYdata[i][0] not in data and PYdata[i][0]!=None:
-            data.append[PYdata[i][0]]  
+            data.append(PYdata[i][0])  
     for i in range(len(CYMTDdata)):
         if CYMTDdata[i][0] not in data and CYMTDdata[i][0]!=None:
-            data.append[CYMTDdata[i][0]]     
+            data.append(CYMTDdata[i][0])     
     for i in range(len(PYMTDdata)):
         if PYMTDdata[i][0] not in data and PYMTDdata[i][0]!=None:
-            data.append[PYMTDdata[i][0]]      
+            data.append(PYMTDdata[i][0])      
     for i in range(len(CYYTDdata)):
         if CYYTDdata[i][0] not in data and CYYTDdata[i][0]!=None:
-            data.append[CYYTDdata[i][0]]   
+            data.append(CYYTDdata[i][0])   
     for i in range(len(PYYTDdata)):
         if PYYTDdata[i][0] not in data and PYYTDdata[i][0]!=None:
-            data.append[PYYTDdata[i][0]]     
+            data.append(PYYTDdata[i][0])     
     return data
 def datamerge(title,CYdata,PYdata):
     data=[]
