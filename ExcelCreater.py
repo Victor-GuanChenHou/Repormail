@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 import pandas as pd
 import datetime
@@ -20,68 +20,67 @@ PYtd=datetime.date(int(datetime.datetime.now().year)-1,1,1)
 # print(Plastdate)
 # print(PMtd)
 # print(PYtd)
-def datamerge(CYdata,PYdata):
+def datatitle(CYdata,PYdata,CYMTDdata,PYMTDdata,CYYTDdata,PYYTDdata):
     data=[]
-    CY_unique=[]
     for i in range(len(CYdata)):
-        Status=False
-        for j in range(len(PYdata)):
-            if CYdata[i][0]==PYdata[j][0]:
-                # id name cysales pysales index TC TC_P TC_index TA TA_P TA_index
+        if CYdata[i][0] not in data and CYdata[i][0]!=None:
+            data.append[CYdata[i][0]]
+    for i in range(len(PYdata)):
+        if PYdata[i][0] not in data and PYdata[i][0]!=None:
+            data.append[PYdata[i][0]]  
+    for i in range(len(CYMTDdata)):
+        if CYMTDdata[i][0] not in data and CYMTDdata[i][0]!=None:
+            data.append[CYMTDdata[i][0]]     
+    for i in range(len(PYMTDdata)):
+        if PYMTDdata[i][0] not in data and PYMTDdata[i][0]!=None:
+            data.append[PYMTDdata[i][0]]      
+    for i in range(len(CYYTDdata)):
+        if CYYTDdata[i][0] not in data and CYYTDdata[i][0]!=None:
+            data.append[CYYTDdata[i][0]]   
+    for i in range(len(PYYTDdata)):
+        if PYYTDdata[i][0] not in data and PYYTDdata[i][0]!=None:
+            data.append[PYYTDdata[i][0]]     
+    return data
+def datamerge(title,CYdata,PYdata):
+    data=[]
+    CYid=[i[0] for i in CYdata]
+    PYid=[i[0] for i in CYdata]
+    for i in range(len(title)):
+         CYpositions = [index for index, value in enumerate(CYid) if value == title[i]]
+         PYpositions = [index for index, value in enumerate(PYid) if value == title[i]]
+         if CYpositions!=[] and PYpositions!=[]:
+             # id name cysales pysales index TC TC_P TC_index TA TA_P TA_index
                 thedata=(
-                    CYdata[i][0],CYdata[i][1],
-                    float(CYdata[i][3]),
-                    float(PYdata[j][3]),
-                    float(CYdata[i][3])/float(PYdata[j][3]),
-                    int(int(CYdata[i][4])),
-                    int(int(PYdata[j][4])),
-                    float(CYdata[i][4])/float(PYdata[j][4]),
-                    float(CYdata[i][3])/float(CYdata[i][4]),
-                    float(PYdata[j][3])/float(PYdata[j][4]),
-                    (float(CYdata[i][3])/float(CYdata[i][4]))/(float(PYdata[j][3])/float(PYdata[j][4])))
+                    CYdata[CYpositions[0]][0],CYdata[CYpositions[0]][1],
+                    float(CYdata[CYpositions[0]][3]),
+                    float(PYdata[PYpositions[0]][3]),
+                    float(CYdata[CYpositions[0]][3])/float(PYdata[PYpositions[0]][3]),
+                    int(int(CYdata[CYpositions[0]][4])),
+                    int(int(PYdata[PYpositions[0]][4])),
+                    float(CYdata[CYpositions[0]][4])/float(PYdata[PYpositions[0]][4]),
+                    float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]),
+                    float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4]),
+                    (float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]))/(float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4])))
                 data.append(thedata)
-                Status=True
-                if PYdata[j] in PYdata:
-                    PYdata.remove(PYdata[j]) 
-                break
-        if Status==False:
-            CY_unique.append(CYdata[i])
-    try:
-        for i in range(len(CY_unique)):
-            thedata=(
-                CY_unique[i][0],
-                CY_unique[i][1],
-                float(CY_unique[i][3]),
+         elif CYpositions!=[] and PYpositions==[]:
+             thedata=(
+                CYdata[CYpositions[0]][0],
+                CYdata[CYpositions[0]][1],
+                float(CYdata[CYpositions[0]][3]),
                 None,
                 None,
-                int(CY_unique[i][4]),
+                int(CYdata[CYpositions[0]][4]),
                 None,
                 None,
-                float(CY_unique[i][3])/float(CY_unique[i][4]),
+                float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]),
                 None,
                 None)
-            data.append(thedata)
-    except:
-        pass
-    try:
-        for i in range(len(PYdata)):
-            thedata=(
-                PYdata[i][0],
-                PYdata[i][1],
-                None,float(PYdata[i][3]),
-                None,
-                None,
-                int(PYdata[i][4]),
-                None,
-                None,
-                float(PYdata[i][3])/float(PYdata[i][4]),None)
-            data.append(thedata)
-    except:
-        pass
+             data.append(thedata)
     data=pd.DataFrame(data)
     data[5] = data[5].astype('Int64')
     data[6] = data[6].astype('Int64')
     return data
+
 brand=['杏','大阪王將','勝牛','段純貞', '橋村','杏子小食堂']
 df={}
 for i in range(len(brand)):
@@ -91,13 +90,15 @@ for i in range(len(brand)):
     PYMTDdata=MYSQL.searchdata(brand[i],PMtd,Plastdate)
     CYYTDdata=MYSQL.searchdata(brand[i],Ytd,lastdate)
     PYYTDdata=MYSQL.searchdata(brand[i],PYtd,Plastdate)
+
+    data_tile=datatitle(CYdata,PYdata,CYMTDdata,PYMTDdata,CYYTDdata,PYYTDdata)
     # 數據資料
-    daily_data=datamerge(CYdata,PYdata)
-    MTD_data=datamerge(CYMTDdata,PYMTDdata)
-    YTD_data=datamerge(CYYTDdata,PYYTDdata)
+    daily_data=datamerge(data_tile,CYdata,PYdata)
+    MTD_data=datamerge(data_tile,CYMTDdata,PYMTDdata)
+    YTD_data=datamerge(data_tile,CYYTDdata,PYYTDdata)
 
     data = {
-        "Category": daily_data[1],
+        " ": daily_data[1],
         "Daily Sales CY": daily_data[2],
         "Daily Sales PY": daily_data[3],
         "Daily Sales Index":daily_data[4],

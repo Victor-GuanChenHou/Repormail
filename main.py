@@ -1,7 +1,7 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # coding: utf-8
 import os
-os.system("FTPSgetdata.py")
-os.system("Datamerge.py")
-os.system('ExcelCreater.py')
-os.system('reportmail.py')
+# os.system("python3 ./FTPSgetdata.py")
+# os.system("python3 ./Datamerge.py")
+os.system('python3 ./ExcelCreater.py')
+os.system('python3 ./reportmail.py')
