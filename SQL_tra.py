@@ -50,7 +50,10 @@ def searchdata(brand,start_time,end_time):
         db=pymysql.connect(host=host,user=user,password=password,database=database,port=port)
         cursor = db.cursor()
         cursor.execute("SET SESSION sql_mode=(SELECT REPLACE(@@SESSION.sql_mode,'ONLY_FULL_GROUP_BY',''));")
-        cursor.execute("SELECT store_id FROM storedata WHERE brand = %s",brand)
+        if(brand=='杏子小食堂'):
+            cursor.execute("SELECT store_id FROM storedata WHERE brand = '杏子小食堂' or brand = '杏美小食堂'")
+        else:
+            cursor.execute("SELECT store_id FROM storedata WHERE brand = %s",brand)
         storeids = cursor.fetchall()
         data=[]
         for storeid_tuple in storeids:
