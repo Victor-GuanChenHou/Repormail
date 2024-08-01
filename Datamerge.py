@@ -8,6 +8,7 @@ from openpyxl import load_workbook# 檢測編譯格式
 import os
 import numpy as np
 import SQL_tra as MYSQL
+import Time as Time
 # import chardet
 # with open("./Origianldata/20240702235509.csv", 'rb') as f:
 #     result = chardet.detect(f.read())
@@ -30,7 +31,8 @@ def date_segmentation(date):
     rdates=str(dates[0]+'-'+dates[1]+'-'+dates[2])
     return rdates
 ###選取原始資料檔
-datadate = str(datetime.datetime.now().year)  + str(datetime.datetime.now().month).zfill(2)  + str(int(datetime.datetime.now().day-1)).zfill(2)
+TIME=Time.lasttime()
+datadate = TIME[8]
 folder_path = "./Origianldata"
 csv_files = [f for f in os.listdir(folder_path) if f.endswith('.csv')and f[:8]==datadate]
 df_csv = pd.read_csv("./Origianldata/"+str(csv_files[len(csv_files)-1]), encoding='utf-16')

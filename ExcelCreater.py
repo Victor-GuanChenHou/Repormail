@@ -3,16 +3,19 @@
 import pandas as pd
 import datetime
 import SQL_tra as MYSQL
-# 找前一天日期
-date = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(int(datetime.datetime.now().day-1))
-fileName ='./Senddata/'+ date + '_Report.xlsx'
-lastdate=datetime.date(int(datetime.datetime.now().year),int(datetime.datetime.now().month),int(datetime.datetime.now().day)-1)
-Mtd=datetime.date(int(datetime.datetime.now().year),int(datetime.datetime.now().month),1)
-Ytd=datetime.date(int(datetime.datetime.now().year),1,1)
+import Time as Time
 
-Plastdate=datetime.date(int(datetime.datetime.now().year)-1,int(datetime.datetime.now().month),int(datetime.datetime.now().day)-1)
-PMtd=datetime.date(int(datetime.datetime.now().year)-1,int(datetime.datetime.now().month),1)
-PYtd=datetime.date(int(datetime.datetime.now().year)-1,1,1)
+TIME=Time.lasttime()
+
+date = TIME[9]
+fileName ='./Senddata/'+ date + '_Report.xlsx'
+lastdate=TIME[0]
+Mtd=TIME[1]
+Ytd=TIME[2]
+
+Plastdate=TIME[3]
+PMtd=TIME[4]
+PYtd=TIME[5]
 
 # print(lastdate)
 # print(Mtd)
@@ -134,8 +137,8 @@ for i in range(len(brand)):
 
 with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
     sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
-    MTD= '('+str(datetime.datetime.now().month) + '/1~'+ str(datetime.datetime.now().month)+'/'+ str(int(datetime.datetime.now().day)-1)+')'
-    YTD='(1/1~'+ str(datetime.datetime.now().month)+'/'+ str(int(datetime.datetime.now().day)-1)+')'
+    MTD=TIME[6]
+    YTD=TIME[7]
     print(MTD)
     print(YTD)
     for i in range(len(sheet_names)):
