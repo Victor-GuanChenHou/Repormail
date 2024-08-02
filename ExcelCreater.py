@@ -91,7 +91,7 @@ def datamerge(title,CYdata,PYdata):
              data.append(thedata)
     if PYtotal !=0:
         thedata=(
-                "total","total",
+                "Total","Total",
                 float(CYtotal),
                 float(PYtotal),
                 (float(CYtotal)/float(PYtotal))*100,
@@ -104,7 +104,7 @@ def datamerge(title,CYdata,PYdata):
         )
     else:
         thedata=(
-                "total","total",
+                "Total","Total",
                 float(CYtotal),
                 None,
                 None,
@@ -124,7 +124,33 @@ def datamerge(title,CYdata,PYdata):
 brand=['杏','大阪王將','勝牛','段純貞', '橋村','杏子小食堂']
 Nuberofstore=[]
 df={}
-
+total_daily_sales_cy=0
+total_daily_sales_py=0
+total_daily_sales_index=0
+total_daily_tc_cy=0
+total_daily_tc_py=0
+total_daily_tc_index=0
+total_daily_ta_cy=0
+total_daily_ta_py=0
+total_daily_ta_index=0
+total_mtd_sales_cy=0
+total_mtd_sales_py=0
+total_mtd_sales_index=0
+total_mtd_tc_cy=0
+total_mtd_tc_py=0
+total_mtd_tc_index=0
+total_mtd_ta_cy=0
+total_mtd_ta_py=0
+total_mtd_ta_index=0
+total_ytd_sales_cy=0
+total_ytd_sales_py=0
+total_ytd_sales_index=0
+total_ytd_tc_cy=0
+total_ytd_tc_py=0
+total_ytd_tc_index=0
+total_ytd_ta_cy=0
+total_ytd_ta_py=0
+total_ytd_ta_index=0
 for i in range(len(brand)):
     CYdata=MYSQL.searchdata(brand[i],lastdate,lastdate)
     PYdata=MYSQL.searchdata(brand[i],Plastdate,Plastdate)
@@ -173,6 +199,40 @@ for i in range(len(brand)):
     Nuberofstore.append(num)
     # 創建dataframe
     df[brand[i]]=(pd.DataFrame(data))
+    #所有品牌業績加總
+    total_daily_sales_cy+= sum(data["Daily Sales CY"])
+    total_daily_sales_py+= sum(data["Daily Sales PY"])
+    total_daily_sales_index=(total_daily_sales_cy/total_daily_sales_py)*100
+    total_daily_tc_cy+= sum(data["Daily TC CY"])
+    total_daily_tc_py+= sum(data["Daily TC PY"])
+    total_daily_tc_index=(total_daily_tc_cy/total_daily_tc_py)*100
+    total_daily_ta_cy=total_daily_sales_cy/total_daily_tc_cy
+    total_daily_ta_py=total_daily_sales_py/total_daily_tc_py
+    total_daily_ta_index=(total_daily_ta_cy/total_daily_ta_py)*100
+    total_mtd_sales_cy+= sum(data["MTD Sales CY"])
+    total_mtd_sales_py+= sum(data["MTD Sales PY"])
+    total_mtd_sales_index=(total_mtd_sales_cy/total_mtd_sales_py)*100
+    total_mtd_tc_cy+= sum(data["MTD TC CY"])
+    total_mtd_tc_py+= sum(data["MTD TC PY"])
+    total_mtd_tc_index=(total_mtd_tc_cy/total_mtd_tc_py)*100
+    total_mtd_ta_cy=total_mtd_sales_cy/total_mtd_tc_cy
+    total_mtd_ta_py=total_mtd_sales_py/total_mtd_tc_py
+    total_mtd_ta_index=(total_mtd_ta_cy/total_mtd_ta_py)*100
+    total_ytd_sales_cy+= sum(data["YTD Sales CY"])
+    total_ytd_sales_py+= sum(data["YTD Sales PY"])
+    total_ytd_sales_index=(total_ytd_sales_cy/total_ytd_sales_py)*100
+    total_ytd_tc_cy+= sum(data["YTD TC CY"])
+    total_ytd_tc_py+= sum(data["YTD TC PY"])
+    total_ytd_tc_index=(total_ytd_tc_cy/total_ytd_tc_py)*100
+    total_ytd_ta_cy=total_ytd_sales_cy/total_ytd_tc_cy
+    total_ytd_ta_py=total_ytd_sales_py/total_ytd_tc_py
+    total_ytd_ta_index=(total_ytd_ta_cy/total_ytd_ta_py)*100
+
+for i in range(len(brand)):
+    df[brand[i]].loc[-1] = ["全品牌", total_daily_sales_cy] 
+    df[brand[i]].index = df[brand[i]].index + 1  
+    df[brand[i]].sort_index(inplace=True)  
+
 
 sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
 for i in range(len(sheet_names)):
