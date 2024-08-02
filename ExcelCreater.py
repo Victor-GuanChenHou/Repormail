@@ -229,7 +229,7 @@ for i in range(len(brand)):
     total_ytd_ta_index=(total_ytd_ta_cy/total_ytd_ta_py)*100
 
 for i in range(len(brand)):
-    df[brand[i]].loc[-1] = ["全品牌", total_daily_sales_cy] 
+    df[brand[i]].loc[-1] = ["全品牌",total_daily_sales_cy,total_daily_sales_py,total_daily_sales_index,total_daily_tc_cy,total_daily_tc_py, total_daily_tc_index,total_daily_ta_cy,total_daily_ta_py,total_daily_ta_index,total_mtd_sales_cy,total_mtd_sales_py, total_mtd_sales_index,total_mtd_tc_cy, total_mtd_tc_py, total_mtd_tc_index,total_mtd_ta_cy,total_mtd_ta_py,total_mtd_ta_index,total_ytd_sales_cy,total_ytd_sales_py,total_ytd_sales_index,total_ytd_tc_cy,total_ytd_tc_py,total_ytd_tc_index,total_ytd_ta_cy,total_ytd_ta_py,total_ytd_ta_index] 
     df[brand[i]].index = df[brand[i]].index + 1  
     df[brand[i]].sort_index(inplace=True)  
 
