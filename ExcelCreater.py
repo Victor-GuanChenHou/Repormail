@@ -237,8 +237,8 @@ with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
         for col in range(1,26):
             col_letter = chr(ord('B') + col - 1)
             worksheet.set_column(f'{col_letter}8:{col_letter}100', 15,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
-        worksheet.set_column('AA8:AA100', 15,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
-        worksheet.set_column('AB8:AB100', 15,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
-        worksheet.set_column('A1:A100',18)
+        worksheet.set_column('AA8:AA100', 11,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
+        worksheet.set_column('AB8:AB100', 11,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
+        worksheet.set_column('A1:A100',16)
 
 print("報表完成")
