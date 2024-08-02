@@ -48,8 +48,8 @@ try:
         msg['Subject'] = 'Daily Report'
         msg.attach(MIMEText('Daily Report', 'plain', 'utf-8'))#設置郵件文檔
         for j in range(len(sheet_names)):
-            filepath ='./Senddata/'+sheet_names[i]+'_'+ date + '_Report.xlsx'
-            filename =sheet_names[i]+'_'+ date + '_Report.xlsx'
+            filepath ='./Senddata/'+sheet_names[j]+'_'+ date + '_Report.xlsx'
+            filename =sheet_names[j]+'_'+ date + '_Report.xlsx'
             with open(filepath, 'rb') as attachment:
                 part = MIMEApplication(attachment.read(), Name=filename)
                 part['Content-Disposition'] = f'attachment; filename="{filename}"'
