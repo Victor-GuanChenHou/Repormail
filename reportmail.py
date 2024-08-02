@@ -27,7 +27,7 @@ port = 465
 # 設置發送者和接收者的電子郵件地址
 from_addr = 'kingzareport@kingza.com.tw'
 to_addr = ['victor.hou@kingza.com.tw']#寄送對象
-
+sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
 
 
 
@@ -54,10 +54,11 @@ try:
         msg['To'] = to_addr[i]
         msg['Subject'] = 'Daily Report'
         msg.attach(MIMEText('Daily Report', 'plain', 'utf-8'))#設置郵件文檔
-        with open(filepath, 'rb') as attachment:
-            part = MIMEApplication(attachment.read(), Name=filename)
-            part['Content-Disposition'] = f'attachment; filename="{filename}"'
-            msg.attach(part)
+        for j in range(len(sheet_names)):
+            with open(filepath, 'rb') as attachment:
+                part = MIMEApplication(attachment.read(), Name=str(filename+sheet_names[j]))
+                part['Content-Disposition'] = f'attachment; filename="{str(filename+sheet_names[j])}"'
+                msg.attach(part)
         with smtplib.SMTP_SSL(smtp_server, port) as smtp:
             smtp.login(username, password)
             smtp.sendmail(from_addr, to_addr[i], msg.as_string())
