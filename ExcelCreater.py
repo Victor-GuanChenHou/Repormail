@@ -65,13 +65,13 @@ def datamerge(title,CYdata,PYdata):
                     CYdata[CYpositions[0]][0],CYdata[CYpositions[0]][1],
                     float(CYdata[CYpositions[0]][3]),
                     float(PYdata[PYpositions[0]][3]),
-                    float(CYdata[CYpositions[0]][3])/float(PYdata[PYpositions[0]][3]),
+                    (float(CYdata[CYpositions[0]][3])/float(PYdata[PYpositions[0]][3]))*100,
                     int(int(CYdata[CYpositions[0]][4])),
                     int(int(PYdata[PYpositions[0]][4])),
-                    float(CYdata[CYpositions[0]][4])/float(PYdata[PYpositions[0]][4]),
+                    (float(CYdata[CYpositions[0]][4])/float(PYdata[PYpositions[0]][4]))*100,
                     float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]),
                     float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4]),
-                    (float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]))/(float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4])))
+                    ((float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]))/(float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4]))))*100
                 data.append(thedata)
          elif CYpositions!=[] and PYpositions==[]:
              CYtotal=CYtotal+CYdata[CYpositions[0]][3]
@@ -94,13 +94,13 @@ def datamerge(title,CYdata,PYdata):
                 "total","total",
                 float(CYtotal),
                 float(PYtotal),
-                float(CYtotal)/float(PYtotal),
+                (float(CYtotal)/float(PYtotal))*100,
                 int(int(CYTC)),
                 int(int(PYTC)),
-                float(CYTC)/float(PYTC),
+                (float(CYTC)/float(PYTC))*100,
                 float(CYtotal)/float(CYTC),
                 float(PYtotal)/float(PYTC),
-                (float(CYtotal)/float(CYTC))/(float(PYtotal)/float(PYTC))
+                ((float(CYtotal)/float(CYTC))/(float(PYtotal)/float(PYTC)))*100
         )
     else:
         thedata=(
@@ -184,6 +184,8 @@ with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
         worksheet = writer.sheets[sheet_names[i]]
         worksheet.write('A1', TIME[9])
         # 合併儲存格
+        worksheet.merge_range('A1:B1', TIME[9], workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True}))
+        
         worksheet.merge_range('B6:D6', 'Daily Sales', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800000','font_color': '#FFFFFF'}))
         worksheet.merge_range('E6:G6', 'Daily TC', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#008080','font_color': '#FFFFFF'}))
         worksheet.merge_range('H6:J6', 'Daily TA', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800080','font_color': '#FFFFFF'}))
@@ -225,5 +227,11 @@ with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
         worksheet.write('Z7', 'CY', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800080','font_color': '#FFFFFF'}))
         worksheet.write('AA7', 'PY', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800080','font_color': '#FFFFFF'}))
         worksheet.write('AB7', 'Index', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800080','font_color': '#FFFFFF'}))
+
+        # 設置B8到U8以下100格的格式
+        for col in range(ord('B'), ord('AB') + 1):
+            col_letter = chr(col)
+            worksheet.set_column(f'{col_letter}8:{col_letter}100', None,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
+
 
 print("報表完成")
