@@ -48,10 +48,18 @@ def datamerge(title,CYdata,PYdata):
     data=[]
     CYid=[i[0] for i in CYdata]
     PYid=[i[0] for i in PYdata]
+    CYtotal=0
+    PYtotal=0
+    CYTC=0
+    PYTC=0
     for i in range(len(title)):
          CYpositions = [index for index, value in enumerate(CYid) if value == title[i]]
          PYpositions = [index for index, value in enumerate(PYid) if value == title[i]]
          if CYpositions!=[] and PYpositions!=[]:
+                CYtotal=CYtotal+CYdata[CYpositions[0]][3]
+                CYTC=CYTC+CYdata[CYpositions[0]][4]
+                PYtotal=PYtotal+PYdata[PYpositions[0]][3]
+                PYTC=PYTC+PYdata[PYpositions[0]][4]
              # id name cysales pysales index TC TC_P TC_index TA TA_P TA_index
                 thedata=(
                     CYdata[CYpositions[0]][0],CYdata[CYpositions[0]][1],
@@ -66,6 +74,8 @@ def datamerge(title,CYdata,PYdata):
                     (float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]))/(float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4])))
                 data.append(thedata)
          elif CYpositions!=[] and PYpositions==[]:
+             CYtotal=CYtotal+CYdata[CYpositions[0]][3]
+             CYTC=CYTC+CYdata[CYpositions[0]][4]
              thedata=(
                 CYdata[CYpositions[0]][0],
                 CYdata[CYpositions[0]][1],
@@ -79,12 +89,6 @@ def datamerge(title,CYdata,PYdata):
                 None,
                 None)
              data.append(thedata)
-    for i in range(len(CYdata)):
-        CYtotal=CYtotal+CYdata[i][3]
-        CYTC=CYTC+CYdata[i][4]
-    for i in range(len(PYdata)):
-        PYtotal=PYtotal+PYdata[i][3]
-        PYTC=PYTC+PYdata[i][4]
     thedata=(
             "total","total",
             float(CYtotal),
