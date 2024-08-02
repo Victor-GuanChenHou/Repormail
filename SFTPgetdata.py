@@ -6,6 +6,7 @@ import os
 import sys
 import logging
 import datetime
+import Time as Time
 load_dotenv()
 logging.basicConfig(
     filename='sftp.log',
@@ -35,7 +36,8 @@ sftp.chdir("All")#在Nas All的資料夾拿資料
 folder_file_list = sftp.listdir()
 
 #拿取前一天資料
-date = str(datetime.datetime.now().year)  + str(datetime.datetime.now().month).zfill(2)  + str(int(datetime.datetime.now().day-1)).zfill(2)
+TIME=Time.lasttime()
+date = TIME[8]
 for i in range(len(folder_file_list)):
     if date == folder_file_list[i][:8]:
         remote_filename=folder_file_list[i]

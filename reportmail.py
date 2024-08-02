@@ -9,6 +9,7 @@ import logging
 from dotenv import load_dotenv
 import os
 import datetime
+import Time as Time
 load_dotenv()
 logging.basicConfig(
     filename='report_mail.log',
@@ -37,7 +38,8 @@ password = os.getenv('mailpassword')
 
 #傳送檔案
 try:
-    date = str(datetime.datetime.now().year) + '-' + str(datetime.datetime.now().month) + '-' + str(int(datetime.datetime.now().day-1))
+    TIME=Time.lasttime()
+    date = TIME[9]
     filepath='./Senddata/'+ date + '_Report.xlsx'
     filename= date + '_Report.xlsx'
 except Exception as e:
