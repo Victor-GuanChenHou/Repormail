@@ -36,28 +36,23 @@ username = os.getenv('mailusername')
 password = os.getenv('mailpassword')
 
 
-#傳送檔案
+
+# 發送郵件
 try:
     TIME=Time.lasttime()
     date = TIME[9]
-    filepath='./Senddata/'+ date + '_Report.xlsx'
-    filename= date + '_Report.xlsx'
-except Exception as e:
-    print(f"郵件傳送失敗: {e}")
-    logging.error(f'Send Mail Error: {e}')
-# 發送郵件
-try:
     for i in range(len(to_addr)):
-        
         msg = MIMEMultipart()
         msg['From'] = from_addr
         msg['To'] = to_addr[i]
         msg['Subject'] = 'Daily Report'
         msg.attach(MIMEText('Daily Report', 'plain', 'utf-8'))#設置郵件文檔
         for j in range(len(sheet_names)):
+            filepath ='./Senddata/'+sheet_names[i]+'_'+ date + '_Report.xlsx'
+            filename =sheet_names[i]+'_'+ date + '_Report.xlsx'
             with open(filepath, 'rb') as attachment:
-                part = MIMEApplication(attachment.read(), Name=str(filename+sheet_names[j]))
-                part['Content-Disposition'] = f'attachment; filename="{str(filename+sheet_names[j])}"'
+                part = MIMEApplication(attachment.read(), Name=filename)
+                part['Content-Disposition'] = f'attachment; filename="{filename}"'
                 msg.attach(part)
         with smtplib.SMTP_SSL(smtp_server, port) as smtp:
             smtp.login(username, password)

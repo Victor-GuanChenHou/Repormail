@@ -8,7 +8,6 @@ import Time as Time
 TIME=Time.lasttime()
 
 date = TIME[9]
-fileName ='./Senddata/'+ date + '_Report.xlsx'
 lastdate=TIME[0]
 Mtd=TIME[1]
 Ytd=TIME[2]
@@ -176,7 +175,8 @@ for i in range(len(brand)):
 
 sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
 for i in range(len(sheet_names)):
-    with pd.ExcelWriter(str(fileName+sheet_names[i]), engine='xlsxwriter') as writer:
+    fileName ='./Senddata/'+sheet_names[i]+'_'+ date + '_Report.xlsx'
+    with pd.ExcelWriter(str(fileName), engine='xlsxwriter') as writer:
             MTD=TIME[6]
             YTD=TIME[7]
             print(MTD)
