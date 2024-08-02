@@ -71,7 +71,7 @@ def datamerge(title,CYdata,PYdata):
                     (float(CYdata[CYpositions[0]][4])/float(PYdata[PYpositions[0]][4]))*100,
                     float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]),
                     float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4]),
-                    ((float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]))/(float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4]))))*100
+                    (float(float(CYdata[CYpositions[0]][3])/float(CYdata[CYpositions[0]][4]))/(float(PYdata[PYpositions[0]][3])/float(PYdata[PYpositions[0]][4]))))*100
                 data.append(thedata)
          elif CYpositions!=[] and PYpositions==[]:
              CYtotal=CYtotal+CYdata[CYpositions[0]][3]
@@ -122,7 +122,9 @@ def datamerge(title,CYdata,PYdata):
     return data
 
 brand=['杏','大阪王將','勝牛','段純貞', '橋村','杏子小食堂']
+Nuberofstore=[]
 df={}
+
 for i in range(len(brand)):
     CYdata=MYSQL.searchdata(brand[i],lastdate,lastdate)
     PYdata=MYSQL.searchdata(brand[i],Plastdate,Plastdate)
@@ -167,7 +169,8 @@ for i in range(len(brand)):
         "YTD TA PY":YTD_data[9],
         "YTD TA Index":YTD_data[10],
     }
-
+    num=len(daily_data[1])-1
+    Nuberofstore.append(num)
     # 創建dataframe
     df[brand[i]]=(pd.DataFrame(data))
 
@@ -183,6 +186,8 @@ with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
         workbook  = writer.book
         worksheet = writer.sheets[sheet_names[i]]
         worksheet.write('A1', TIME[9])
+        worksheet.write('A2', 'CY店數')
+        worksheet.write('B2', Nuberofstore[i])
         # 合併儲存格
         worksheet.merge_range('A1:B1', TIME[9], workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True}))
         
@@ -229,9 +234,11 @@ with pd.ExcelWriter(fileName, engine='xlsxwriter') as writer:
         worksheet.write('AB7', 'Index', workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True,'bg_color': '#800080','font_color': '#FFFFFF'}))
 
         # 設置B8到U8以下100格的格式
-        for col in range(ord('B'), ord('AB') + 1):
-            col_letter = chr(col)
-            worksheet.set_column(f'{col_letter}8:{col_letter}100', None,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
-
+        for col in range(1,26):
+            col_letter = chr(ord('B') + col - 1)
+            worksheet.set_column(f'{col_letter}8:{col_letter}100', 15,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
+        worksheet.set_column('AA8:AA100', 15,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
+        worksheet.set_column('AB8:AB100', 15,  workbook.add_format({'num_format': '#,##0', 'align': 'right'}))
+        worksheet.set_column('A1:A100',18)
 
 print("報表完成")
