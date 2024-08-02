@@ -89,18 +89,32 @@ def datamerge(title,CYdata,PYdata):
                 None,
                 None)
              data.append(thedata)
-    thedata=(
-            "total","total",
-            float(CYtotal),
-            float(PYtotal),
-            float(CYtotal)/float(PYtotal),
-            int(int(CYTC)),
-            int(int(PYTC)),
-            float(CYTC)/float(PYTC),
-            float(CYtotal)/float(CYTC),
-            float(PYtotal)/float(PYTC),
-            (float(CYtotal)/float(CYTC))/(float(PYtotal)/float(PYTC))
-    )
+    if PYtotal !=0:
+        thedata=(
+                "total","total",
+                float(CYtotal),
+                float(PYtotal),
+                float(CYtotal)/float(PYtotal),
+                int(int(CYTC)),
+                int(int(PYTC)),
+                float(CYTC)/float(PYTC),
+                float(CYtotal)/float(CYTC),
+                float(PYtotal)/float(PYTC),
+                (float(CYtotal)/float(CYTC))/(float(PYtotal)/float(PYTC))
+        )
+    else:
+        thedata=(
+                "total","total",
+                float(CYtotal),
+                None,
+                None,
+                int(int(CYTC)),
+                None,
+                None,
+                float(CYtotal)/float(CYTC),
+                None,
+                None
+        )
     data.insert(0,thedata)
     data=pd.DataFrame(data)
     data[5] = data[5].astype('Int64')
