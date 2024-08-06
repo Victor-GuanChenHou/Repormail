@@ -218,15 +218,15 @@ for i in range(len(brand)):
     # 創建dataframe
     df[brand[i]]=(pd.DataFrame(data))
     #所有品牌業績加總
-    total_daily_sales_cy+= sum(0 if x is None else x for x in data["Daily Sales CY"])
-    total_daily_sales_py+= sum(0 if x is None else x for x in data["Daily Sales PY"])
+    total_daily_sales_cy+= sum(0 if x is pd.notna(x) else x for x in data["Daily Sales CY"])
+    total_daily_sales_py+= sum(0 if x is pd.notna(x) else x for x in data["Daily Sales PY"])
     if total_daily_sales_py == 0:
         total_daily_sales_py = None
         total_daily_sales_index = None
     else:
         total_daily_sales_index = (total_daily_sales_cy / total_daily_sales_py) * 100
-    total_daily_tc_cy+= sum(0 if x is None else x for x in data["Daily TC CY"])
-    total_daily_tc_py+= sum(0 if x is None else x for x in data["Daily TC PY"])
+    total_daily_tc_cy+= sum(0 if x is pd.notna(x) else x for x in data["Daily TC CY"])
+    total_daily_tc_py+= sum(0 if x is pd.notna(x) else x for x in data["Daily TC PY"])
     if total_daily_tc_py == 0:
         total_daily_tc_py = None
         total_daily_tc_index = None
@@ -239,15 +239,15 @@ for i in range(len(brand)):
     else:
         total_daily_ta_py=total_daily_sales_py/total_daily_tc_py
         total_daily_ta_index=(total_daily_ta_cy/total_daily_ta_py)*100
-    total_mtd_sales_cy+= sum(0 if x is None else x for x in data["MTD Sales CY"])
-    total_mtd_sales_py+= sum(0 if x is None else x for x in data["MTD Sales PY"])
+    total_mtd_sales_cy+= sum(0 if x is pd.notna(x) else x for x in data["MTD Sales CY"])
+    total_mtd_sales_py+= sum(0 if x is pd.notna(x) else x for x in data["MTD Sales PY"])
     if total_mtd_sales_py==0:
          total_mtd_sales_py=None
          total_mtd_sales_index=None
     else:
         total_mtd_sales_index=(total_mtd_sales_cy/total_mtd_sales_py)*100
-    total_mtd_tc_cy+= sum(0 if x is None else x for x in data["MTD TC CY"])
-    total_mtd_tc_py+= sum(0 if x is None else x for x in data["MTD TC PY"])
+    total_mtd_tc_cy+= sum(0 if x is pd.notna(x) else x for x in data["MTD TC CY"])
+    total_mtd_tc_py+= sum(0 if x is pd.notna(x) else x for x in data["MTD TC PY"])
     if total_mtd_tc_py==0:
          total_mtd_tc_py=None
          total_mtd_tc_index=None
@@ -260,15 +260,15 @@ for i in range(len(brand)):
     else:
         total_mtd_ta_py=total_mtd_sales_py/total_mtd_tc_py
         total_mtd_ta_index=(total_mtd_ta_cy/total_mtd_ta_py)*100
-    total_ytd_sales_cy+= sum(0 if x is None else x for x in data["YTD Sales CY"])
-    total_ytd_sales_py+= sum(0 if x is None else x for x in data["YTD Sales PY"])
+    total_ytd_sales_cy+= sum(0 if x is pd.notna(x) else x for x in data["YTD Sales CY"])
+    total_ytd_sales_py+= sum(0 if x is pd.notna(x) else x for x in data["YTD Sales PY"])
     if total_ytd_sales_py==0:
          total_ytd_sales_py=None
          total_ytd_sales_index=None
     else:
         total_ytd_sales_index=(total_ytd_sales_cy/total_ytd_sales_py)*100
-    total_ytd_tc_cy+= sum(0 if x is None else x for x in data["YTD TC CY"])
-    total_ytd_tc_py+= sum(0 if x is None else x for x in data["YTD TC PY"])
+    total_ytd_tc_cy+= sum(0 if x is pd.notna(x) else x for x in data["YTD TC CY"])
+    total_ytd_tc_py+= sum(0 if x is pd.notna(x) else x for x in data["YTD TC PY"])
     if total_ytd_tc_py==0:
          total_ytd_tc_py=None
          total_ytd_tc_index=None
