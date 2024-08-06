@@ -22,26 +22,43 @@ PYtd=TIME[5]
 # print(Plastdate)
 # print(PMtd)
 # print(PYtd)
-def datatitle(CYdata,PYdata,CYMTDdata,PYMTDdata,CYYTDdata,PYYTDdata):
-    data=['全品牌總和','total']
-    for i in range(len(CYdata)):
-        if CYdata[i][0] not in data and CYdata[i][0] is not None:
-            data.append(CYdata[i][0])
-    for i in range(len(PYdata)):
-        if PYdata[i][0] not in data and PYdata[i][0] is not None:
-            data.append(PYdata[i][0])  
-    for i in range(len(CYMTDdata)):
-        if CYMTDdata[i][0] not in data and CYMTDdata[i][0] is not None:
-            data.append(CYMTDdata[i][0])     
-    for i in range(len(PYMTDdata)):
-        if PYMTDdata[i][0] not in data and PYMTDdata[i][0] is not None:
-            data.append(PYMTDdata[i][0])      
-    for i in range(len(CYYTDdata)):
-        if CYYTDdata[i][0] not in data and CYYTDdata[i][0] is not None:
-            data.append(CYYTDdata[i][0])   
-    for i in range(len(PYYTDdata)):
-        if PYYTDdata[i][0] not in data and PYYTDdata[i][0] is not None:
-            data.append(PYYTDdata[i][0])     
+def datatitle(brand):
+    # 讀取 Excel 文件
+    file_path = './王座國際門市通訊錄.xlsx'
+    df = pd.read_excel(file_path)
+
+    # 根據品牌和營運主管進行分組
+    data=[]
+    name=[]
+    for i in range(len(df['品牌'])):
+        if df['品牌'][i]==brand:
+            if df['營運主管'][i] not in name:
+                name.append(df['營運主管'][i])
+    thedata={
+        '品牌':'全品牌總和',
+        'POS店名':'全品牌總和',
+        '店名':'全品牌總和',
+        '營運主管':'全品牌總和'
+    }
+    data.append(thedata)
+    thedata={
+        '品牌':'Total',
+        'POS店名':'Total',
+        '店名':'Total',
+        '營運主管':'Total'
+    }
+    data.append(thedata)
+    for j in range(len(name)):
+        for i in range(len(df['品牌'])):
+            if df['品牌'][i]==d and name[j]==df['營運主管'][i]:
+                    thedata={
+                        '品牌':df['品牌'][i],
+                        'POS店名':df['POS店名'][i],
+                        '店名':df['店名'][i],
+                        '營運主管':df['營運主管'][i]
+                    }
+                    data.append(thedata)
+    data=pd.DataFrame(data)  
     return data
 def datamerge(title,CYdata,PYdata):
     data=[]
@@ -159,14 +176,14 @@ for i in range(len(brand)):
     CYYTDdata=MYSQL.searchdata(brand[i],Ytd,lastdate)
     PYYTDdata=MYSQL.searchdata(brand[i],PYtd,Plastdate)
 
-    data_tile=datatitle(CYdata,PYdata,CYMTDdata,PYMTDdata,CYYTDdata,PYYTDdata)
+    data_tile=datatitle(brand[i])
     # 數據資料
-    daily_data=datamerge(data_tile,CYdata,PYdata)
-    MTD_data=datamerge(data_tile,CYMTDdata,PYMTDdata)
-    YTD_data=datamerge(data_tile,CYYTDdata,PYYTDdata)
+    daily_data=datamerge(data_tile['店名'],CYdata,PYdata)
+    MTD_data=datamerge(data_tile['店名'],CYMTDdata,PYMTDdata)
+    YTD_data=datamerge(data_tile['店名'],CYYTDdata,PYYTDdata)
 
     data = {
-        " ": daily_data[1],
+        " ": data_tile['店名'],
         "Daily Sales CY": daily_data[2],
         "Daily Sales PY": daily_data[3],
         "Daily Sales Index":daily_data[4],
@@ -200,29 +217,29 @@ for i in range(len(brand)):
     # 創建dataframe
     df[brand[i]]=(pd.DataFrame(data))
     #所有品牌業績加總
-    total_daily_sales_cy+= sum(data["Daily Sales CY"])
-    total_daily_sales_py+= sum(data["Daily Sales PY"])
+    total_daily_sales_cy+= sum(0 if x is None else x for x in data["Daily Sales CY"])
+    total_daily_sales_py+= sum(0 if x is None else x for x in data["Daily Sales PY"])
     total_daily_sales_index=(total_daily_sales_cy/total_daily_sales_py)*100
-    total_daily_tc_cy+= sum(data["Daily TC CY"])
-    total_daily_tc_py+= sum(data["Daily TC PY"])
+    total_daily_tc_cy+= sum(0 if x is None else x for x in data["Daily TC CY"])
+    total_daily_tc_py+= sum(0 if x is None else x for x in data["Daily TC PY"])
     total_daily_tc_index=(total_daily_tc_cy/total_daily_tc_py)*100
     total_daily_ta_cy=total_daily_sales_cy/total_daily_tc_cy
     total_daily_ta_py=total_daily_sales_py/total_daily_tc_py
     total_daily_ta_index=(total_daily_ta_cy/total_daily_ta_py)*100
-    total_mtd_sales_cy+= sum(data["MTD Sales CY"])
-    total_mtd_sales_py+= sum(data["MTD Sales PY"])
+    total_mtd_sales_cy+= sum(0 if x is None else x for x in data["MTD Sales CY"])
+    total_mtd_sales_py+= sum(0 if x is None else x for x in data["MTD Sales PY"])
     total_mtd_sales_index=(total_mtd_sales_cy/total_mtd_sales_py)*100
-    total_mtd_tc_cy+= sum(data["MTD TC CY"])
-    total_mtd_tc_py+= sum(data["MTD TC PY"])
+    total_mtd_tc_cy+= sum(0 if x is None else x for x in data["MTD TC CY"])
+    total_mtd_tc_py+= sum(0 if x is None else x for x in data["MTD TC PY"])
     total_mtd_tc_index=(total_mtd_tc_cy/total_mtd_tc_py)*100
     total_mtd_ta_cy=total_mtd_sales_cy/total_mtd_tc_cy
     total_mtd_ta_py=total_mtd_sales_py/total_mtd_tc_py
     total_mtd_ta_index=(total_mtd_ta_cy/total_mtd_ta_py)*100
-    total_ytd_sales_cy+= sum(data["YTD Sales CY"])
-    total_ytd_sales_py+= sum(data["YTD Sales PY"])
+    total_ytd_sales_cy+= sum(0 if x is None else x for x in data["YTD Sales CY"])
+    total_ytd_sales_py+= sum(0 if x is None else x for x in data["YTD Sales PY"])
     total_ytd_sales_index=(total_ytd_sales_cy/total_ytd_sales_py)*100
-    total_ytd_tc_cy+= sum(data["YTD TC CY"])
-    total_ytd_tc_py+= sum(data["YTD TC PY"])
+    total_ytd_tc_cy+= sum(0 if x is None else x for x in data["YTD TC CY"])
+    total_ytd_tc_py+= sum(0 if x is None else x for x in data["YTD TC PY"])
     total_ytd_tc_index=(total_ytd_tc_cy/total_ytd_tc_py)*100
     total_ytd_ta_cy=total_ytd_sales_cy/total_ytd_tc_cy
     total_ytd_ta_py=total_ytd_sales_py/total_ytd_tc_py
@@ -246,7 +263,7 @@ for i in range(len(sheet_names)):
             workbook  = writer.book
             worksheet = writer.sheets[sheet_names[i]]
             worksheet.write('A1', TIME[9])
-            worksheet.write('A2', 'CY店數')
+            worksheet.write('A2', '店數')
             worksheet.write('B2', Nuberofstore[i])
             # 合併儲存格
             worksheet.merge_range('A1:B1', TIME[9], workbook.add_format({'align': 'center', 'valign': 'vcenter', 'bold': True}))
