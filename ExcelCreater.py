@@ -40,7 +40,7 @@ def datatitle(brand):
     #     '店名':'全品牌總和',
     #     '營運主管':'全品牌總和'
     # }
-    data.append(thedata)
+    # data.append(thedata)
     thedata={
         '品牌':'Total',
         'POS店名':'Total',
@@ -50,7 +50,7 @@ def datatitle(brand):
     data.append(thedata)
     for j in range(len(name)):
         for i in range(len(df['品牌'])):
-            if df['品牌'][i]==d and name[j]==df['營運主管'][i]:
+            if df['品牌'][i]==brand and name[j]==df['營運主管'][i]:
                     thedata={
                         '品牌':df['品牌'][i],
                         'POS店名':df['POS店名'][i],
@@ -62,8 +62,8 @@ def datatitle(brand):
     return data
 def datamerge(title,CYdata,PYdata):
     data=[]
-    CYid=[i[0] for i in CYdata]
-    PYid=[i[0] for i in PYdata]
+    CYid=[i[1] for i in CYdata]
+    PYid=[i[1] for i in PYdata]
     CYtotal=0
     PYtotal=0
     CYTC=0
@@ -220,31 +220,67 @@ for i in range(len(brand)):
     #所有品牌業績加總
     total_daily_sales_cy+= sum(0 if x is None else x for x in data["Daily Sales CY"])
     total_daily_sales_py+= sum(0 if x is None else x for x in data["Daily Sales PY"])
-    total_daily_sales_index=(total_daily_sales_cy/total_daily_sales_py)*100
+    if total_daily_sales_py == 0:
+        total_daily_sales_py = None
+        total_daily_sales_index = None
+    else:
+        total_daily_sales_index = (total_daily_sales_cy / total_daily_sales_py) * 100
     total_daily_tc_cy+= sum(0 if x is None else x for x in data["Daily TC CY"])
     total_daily_tc_py+= sum(0 if x is None else x for x in data["Daily TC PY"])
-    total_daily_tc_index=(total_daily_tc_cy/total_daily_tc_py)*100
+    if total_daily_tc_py == 0:
+        total_daily_tc_py = None
+        total_daily_tc_index = None
+    else:
+        total_daily_tc_index = (total_daily_tc_cy / total_daily_tc_py) * 100
     total_daily_ta_cy=total_daily_sales_cy/total_daily_tc_cy
-    total_daily_ta_py=total_daily_sales_py/total_daily_tc_py
-    total_daily_ta_index=(total_daily_ta_cy/total_daily_ta_py)*100
+    if total_daily_tc_py==None or total_daily_sales_py==None:
+        total_daily_ta_py=None
+        total_daily_ta_index=None
+    else:
+        total_daily_ta_py=total_daily_sales_py/total_daily_tc_py
+        total_daily_ta_index=(total_daily_ta_cy/total_daily_ta_py)*100
     total_mtd_sales_cy+= sum(0 if x is None else x for x in data["MTD Sales CY"])
     total_mtd_sales_py+= sum(0 if x is None else x for x in data["MTD Sales PY"])
-    total_mtd_sales_index=(total_mtd_sales_cy/total_mtd_sales_py)*100
+    if total_mtd_sales_py==0:
+         total_mtd_sales_py=None
+         total_mtd_sales_index=None
+    else:
+        total_mtd_sales_index=(total_mtd_sales_cy/total_mtd_sales_py)*100
     total_mtd_tc_cy+= sum(0 if x is None else x for x in data["MTD TC CY"])
     total_mtd_tc_py+= sum(0 if x is None else x for x in data["MTD TC PY"])
-    total_mtd_tc_index=(total_mtd_tc_cy/total_mtd_tc_py)*100
+    if total_mtd_tc_py==0:
+         total_mtd_tc_py=None
+         total_mtd_tc_index=None
+    else:
+        total_mtd_tc_index=(total_mtd_tc_cy/total_mtd_tc_py)*100
     total_mtd_ta_cy=total_mtd_sales_cy/total_mtd_tc_cy
-    total_mtd_ta_py=total_mtd_sales_py/total_mtd_tc_py
-    total_mtd_ta_index=(total_mtd_ta_cy/total_mtd_ta_py)*100
+    if total_mtd_tc_py==None or total_mtd_sales_py==None:
+         total_mtd_ta_py=None
+         total_mtd_ta_index=None
+    else:
+        total_mtd_ta_py=total_mtd_sales_py/total_mtd_tc_py
+        total_mtd_ta_index=(total_mtd_ta_cy/total_mtd_ta_py)*100
     total_ytd_sales_cy+= sum(0 if x is None else x for x in data["YTD Sales CY"])
     total_ytd_sales_py+= sum(0 if x is None else x for x in data["YTD Sales PY"])
-    total_ytd_sales_index=(total_ytd_sales_cy/total_ytd_sales_py)*100
+    if total_ytd_sales_py==0:
+         total_ytd_sales_py=None
+         total_ytd_sales_index=None
+    else:
+        total_ytd_sales_index=(total_ytd_sales_cy/total_ytd_sales_py)*100
     total_ytd_tc_cy+= sum(0 if x is None else x for x in data["YTD TC CY"])
     total_ytd_tc_py+= sum(0 if x is None else x for x in data["YTD TC PY"])
-    total_ytd_tc_index=(total_ytd_tc_cy/total_ytd_tc_py)*100
+    if total_ytd_tc_py==0:
+         total_ytd_tc_py=None
+         total_ytd_tc_index=None
+    else:
+        total_ytd_tc_index=(total_ytd_tc_cy/total_ytd_tc_py)*100
     total_ytd_ta_cy=total_ytd_sales_cy/total_ytd_tc_cy
-    total_ytd_ta_py=total_ytd_sales_py/total_ytd_tc_py
-    total_ytd_ta_index=(total_ytd_ta_cy/total_ytd_ta_py)*100
+    if total_ytd_tc_py==None or total_ytd_sales_py==None:
+        total_ytd_ta_py=None
+        total_ytd_ta_index=None
+    else:
+        total_ytd_ta_py=total_ytd_sales_py/total_ytd_tc_py
+        total_ytd_ta_index=(total_ytd_ta_cy/total_ytd_ta_py)*100
 
 for i in range(len(brand)):
     df[brand[i]].loc[-1] = ["全品牌",total_daily_sales_cy,total_daily_sales_py,total_daily_sales_index,total_daily_tc_cy,total_daily_tc_py, total_daily_tc_index,total_daily_ta_cy,total_daily_ta_py,total_daily_ta_index,total_mtd_sales_cy,total_mtd_sales_py, total_mtd_sales_index,total_mtd_tc_cy, total_mtd_tc_py, total_mtd_tc_index,total_mtd_ta_cy,total_mtd_ta_py,total_mtd_ta_index,total_ytd_sales_cy,total_ytd_sales_py,total_ytd_sales_index,total_ytd_tc_cy,total_ytd_tc_py,total_ytd_tc_index,total_ytd_ta_cy,total_ytd_ta_py,total_ytd_ta_index] 
