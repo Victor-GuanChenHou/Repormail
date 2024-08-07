@@ -229,7 +229,7 @@ for i in range(len(brand)):
         "YTD TC Index":YTD_data[7],
         "YTD TA CY":YTD_data[8],
         "YTD TA PY":YTD_data[9],
-        "YTD TA Index":YTD_data[10],
+        "YTD TA Index":YTD_data[10]
     }
     num=len(daily_data[1])-1
     Nuberofstore.append(num)
@@ -301,9 +301,38 @@ for i in range(len(brand)):
         total_ytd_ta_index=(total_ytd_ta_cy/total_ytd_ta_py)*100
 
 for i in range(len(brand)):
-    df[brand[i]].loc[-1] = ["全品牌",total_daily_sales_cy,total_daily_sales_py,total_daily_sales_index,total_daily_tc_cy,total_daily_tc_py, total_daily_tc_index,total_daily_ta_cy,total_daily_ta_py,total_daily_ta_index,total_mtd_sales_cy,total_mtd_sales_py, total_mtd_sales_index,total_mtd_tc_cy, total_mtd_tc_py, total_mtd_tc_index,total_mtd_ta_cy,total_mtd_ta_py,total_mtd_ta_index,total_ytd_sales_cy,total_ytd_sales_py,total_ytd_sales_index,total_ytd_tc_cy,total_ytd_tc_py,total_ytd_tc_index,total_ytd_ta_cy,total_ytd_ta_py,total_ytd_ta_index] 
-    df[brand[i]].index = df[brand[i]].index + 1  
-    df[brand[i]].sort_index(inplace=True)  
+    new_row ={
+        " ": "全品牌",
+        "營運主管":None,
+        "Daily Sales CY":total_daily_sales_cy,
+        "Daily Sales PY": total_daily_sales_py,
+        "Daily Sales Index":total_daily_sales_index,
+        "Daily TC CY":total_daily_tc_cy,
+        "Daily TC PY":total_daily_tc_py,
+        "Daily TC Index":total_daily_tc_index,
+        "Daily TA CY":total_daily_ta_cy,
+        "Daily TA PY":total_daily_ta_py,
+        "Daily TA Index":total_daily_ta_index,
+        "MTD Sales CY": total_mtd_sales_cy,
+        "MTD Sales PY":total_mtd_sales_py,
+        "MTD Sales Index":total_mtd_sales_index,
+        "MTD TC CY":total_mtd_tc_cy,
+        "MTD TC PY":total_mtd_tc_py,
+        "MTD TC Index":total_mtd_tc_index,
+        "MTD TA CY":total_mtd_ta_cy,
+        "MTD TA PY":total_mtd_ta_py,
+        "MTD TA Index":total_mtd_ta_index,
+        "YTD Sales CY": total_ytd_sales_cy,
+        "YTD Sales PY": total_ytd_sales_py,
+        "YTD Sales Index": total_ytd_sales_index,
+        "YTD TC CY":total_ytd_tc_cy,
+        "YTD TC PY":total_ytd_tc_py,
+        "YTD TC Index":total_ytd_tc_index,
+        "YTD TA CY":total_ytd_ta_cy,
+        "YTD TA PY":total_ytd_ta_py,
+        "YTD TA Index":total_ytd_ta_index
+    }
+    df[brand[i]] = pd.concat([new_row, df]).reset_index(drop=True)
 
 
 sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
