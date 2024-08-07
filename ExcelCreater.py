@@ -340,7 +340,7 @@ for i in range(len(brand)):
         "YTD TA Index":total_ytd_ta_index
     }
     newdata=pd.DataFrame(new_row,index=[0])
-    df[brand[i]] = pd.concat([newdata, df]).reset_index(drop=True)
+    df[brand[i]] = pd.concat([newdata, df[brand[i]]]).reset_index(drop=True)
 
 
 sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
