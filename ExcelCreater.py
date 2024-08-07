@@ -69,7 +69,7 @@ def datamerge(title,CYdata,PYdata):
     PYtotal=0
     CYTC=0
     PYTC=0
-    for i in range(len(title)):
+    for i in range(1,len(title)):
          CYpositions = [index for index, value in enumerate(CYid) if value == title[i]]
          PYpositions = [index for index, value in enumerate(PYid) if value == title[i]]
          if CYpositions!=[] and PYpositions!=[]:
@@ -196,9 +196,9 @@ for i in range(len(brand)):
 
     data_tile=datatitle(brand[i])
     # 數據資料
-    daily_data=datamerge(data_tile['店名'],CYdata,PYdata)
-    MTD_data=datamerge(data_tile['店名'],CYMTDdata,PYMTDdata)
-    YTD_data=datamerge(data_tile['店名'],CYYTDdata,PYYTDdata)
+    daily_data=datamerge(data_tile['POS店名'],CYdata,PYdata)
+    MTD_data=datamerge(data_tile['POS店名'],CYMTDdata,PYMTDdata)
+    YTD_data=datamerge(data_tile['POS店名'],CYYTDdata,PYYTDdata)
 
     data = {
         " ": data_tile['店名'],
