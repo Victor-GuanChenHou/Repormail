@@ -8,6 +8,7 @@ from email.mime.multipart import MIMEMultipart
 import logging
 from dotenv import load_dotenv
 import os
+import pandas as pd
 import datetime
 import Time as Time
 load_dotenv()
@@ -26,7 +27,8 @@ port = 465
 
 # 設置發送者和接收者的電子郵件地址
 from_addr = 'kingzareport@kingza.com.tw'
-to_addr = ['victor.hou@kingza.com.tw']#寄送對象
+file_path = './寄送郵件通訊錄.xlsx'
+df = pd.read_excel(file_path)
 sheet_names = ['杏子豬排', '大阪王將', '京都勝牛', '段純貞', '橋村','杏美小食堂']
 
 
@@ -41,22 +43,23 @@ password = os.getenv('mailpassword')
 try:
     TIME=Time.lasttime()
     date = TIME[9]
-    for i in range(len(to_addr)):
+    for i in range(len(df['寄送對象'])):
         msg = MIMEMultipart()
         msg['From'] = from_addr
-        msg['To'] = to_addr[i]
-        msg['Subject'] = 'Daily Report'
-        msg.attach(MIMEText('Daily Report', 'plain', 'utf-8'))#設置郵件文檔
+        msg['To'] = df['寄送對象'][i]
+        msg['Subject'] = date+'門市報表'
+        msg.attach(MIMEText(date+'門市報表', 'plain', 'utf-8'))#設置郵件文檔
         for j in range(len(sheet_names)):
-            filepath ='./Senddata/'+sheet_names[j]+'_'+ date + '_Report.xlsx'
-            filename =sheet_names[j]+'_'+ date + '_Report.xlsx'
-            with open(filepath, 'rb') as attachment:
-                part = MIMEApplication(attachment.read(), Name=filename)
-                part['Content-Disposition'] = f'attachment; filename="{filename}"'
-                msg.attach(part)
+            if df[sheet_names[j]][i]=='yes':
+                filepath ='./Senddata/'+sheet_names[j]+'_'+ date + '_Report.xlsx'
+                filename =sheet_names[j]+'_'+ date + '_Report.xlsx'
+                with open(filepath, 'rb') as attachment:
+                    part = MIMEApplication(attachment.read(), Name=filename)
+                    part['Content-Disposition'] = f'attachment; filename="{filename}"'
+                    msg.attach(part)
         with smtplib.SMTP_SSL(smtp_server, port) as smtp:
             smtp.login(username, password)
-            smtp.sendmail(from_addr, to_addr[i], msg.as_string())
+            smtp.sendmail(from_addr, df['寄送對象'][i], msg.as_string())
     print("郵件傳送成功!")
     logging.info('Send Mail Success!')
 
