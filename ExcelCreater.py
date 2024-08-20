@@ -235,24 +235,29 @@ for i in range(len(brand)):
     # 創建dataframe
     df[brand[i]]=(pd.DataFrame(data))
     #所有品牌業績加總
-    total_daily_sales_cy+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["Daily Sales CY"])
-    total_daily_sales_py+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["Daily Sales PY"])
+    total_daily_sales_cy=total_daily_sales_cy+daily_data[2][0]
+    if daily_data[3][0]!=None:
+        total_daily_sales_py=total_daily_sales_py+daily_data[3][0]
     
-    total_daily_tc_cy+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["Daily TC CY"])
-    total_daily_tc_py+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["Daily TC PY"])
+    total_daily_tc_cy=total_daily_tc_cy+daily_data[5][0]
+    if daily_data[6][0]!=None:
+        total_daily_tc_py=total_daily_tc_py+daily_data[6][0]
     
-    total_mtd_sales_cy+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["MTD Sales CY"])
-    total_mtd_sales_py+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["MTD Sales PY"])
-    
-    total_mtd_tc_cy+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["MTD TC CY"])
-    total_mtd_tc_py+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["MTD TC PY"])
-    
-    
-    total_ytd_sales_cy+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["YTD Sales CY"])
-    total_ytd_sales_py+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["YTD Sales PY"])
-    
-    total_ytd_tc_cy+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["YTD TC CY"])
-    total_ytd_tc_py+= sum(0 if x is np.nan or x is None or x is pd.NA else x for x in data["YTD TC PY"])
+    total_mtd_sales_cy=total_mtd_sales_cy+MTD_data[2][0]
+    if MTD_data[3][0]!=None:
+        total_mtd_sales_py=total_mtd_sales_py+MTD_data[3][0]
+
+    total_mtd_tc_cy=total_mtd_tc_cy+MTD_data[5][0]
+    if MTD_data[6]!=None:
+        total_mtd_tc_py=total_mtd_tc_py+MTD_data[6][0]
+        
+    total_ytd_sales_cy=total_ytd_sales_cy+YTD_data[2][0]
+    if YTD_data[3]!=None:
+        total_ytd_sales_py=total_ytd_sales_py+YTD_data[3][0]
+
+    total_ytd_tc_cy=total_ytd_tc_cy+YTD_data[5][0]
+    if YTD_data[6]!=None:
+        total_ytd_tc_py=total_ytd_tc_py+YTD_data[6][0]
     
     
 
