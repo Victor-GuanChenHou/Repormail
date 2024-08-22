@@ -72,7 +72,7 @@ for i in df_csv.index:
                     sales_data={
                     'store_id':df_csv['store_id'][i],
                     'invoice_amt':(float(df_csv['invoice_amt'][i]*1)),
-                    'total_customer':1,
+                    'total_customer':float(df_csv['custnumber'][i]*1),
                     'DATE':date_segmentation(df_csv['so_date'][i])
                     
                     }
@@ -91,7 +91,7 @@ for i in df_csv.index:
                         sales_data={
                         'store_id':df_csv['store_id'][i],
                         'invoice_amt':(float(df_csv['invoice_amt'][i]*1)),
-                        'total_customer':1,
+                        'total_customer':float(df_csv['custnumber'][i]*1),
                         'date':date_segmentation(df_csv['so_date'][i])
                         
                         }
@@ -111,19 +111,76 @@ for i in df_csv.index:
                 try:
                     index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
                     install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
-                    install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
+                    install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+float(df_csv['custnumber'][i]*1)
 
                 except:
                     try:
                         index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
                         install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
-                        install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
+                        install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+float(df_csv['custnumber'][i]*1)
 
                     except:
                         pass
+        elif df_csv['so_type'][i]=='B'  and not np.isnan(df_csv['invoice_amt'][i]) :
+            if {'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])} not in install_data_column and storename[0]!=None:
+                try:
+                    
+                    sales_data={
+                    'store_id':df_csv['store_id'][i],
+                    'invoice_amt':(float(df_csv['invoice_amt'][i])),
+                    'total_customer':float(df_csv['custnumber'][i])*-1,
+                    'DATE':date_segmentation(df_csv['so_date'][i])
+                    
+                    }
+                    store_data={
+                        'store_id':df_csv['store_id'][i],
+                        'brand':storename[0],
+                        'store_name':storename[1]
+
+                    }
+                    install_store_data.append(store_data)
+                    install_sales_data.append(sales_data)
+                    columndata={'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])}
+                    install_data_column.append(columndata)
+                except:
+                    try:
+                        sales_data={
+                        'store_id':df_csv['store_id'][i],
+                        'invoice_amt':(float(df_csv['invoice_amt'][i])),
+                        'total_customer':float(df_csv['custnumber'][i]*-1),
+                        'date':date_segmentation(df_csv['so_date'][i])
+                        
+                        }
+                        store_data={
+                            'store_id':df_csv['store_id'][i],
+                            'brand':storename[0],
+                            'store_name':storename[1]
+
+                        }
+                        install_store_data.append(store_data)
+                        install_sales_data.append(sales_data)
+                        columndata={'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])}
+                        install_data_column.append(columndata)
+                    except:
+                        pass
+            else:
+                try:
+                    index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
+                    install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]))
+                    install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+float(df_csv['custnumber'][i]*-1)
+
+                except:
+                    try:
+                        index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
+                        install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]))
+                        install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+float(df_csv['custnumber'][i]*-1)
+
+                    except:
+                        pass
+
+
     except:
         pass
-
 MYSQL.insert_sales_data(install_sales_data)
 MYSQL.insert_store_data(install_store_data)
 if len(sd)!=0:
@@ -218,6 +275,62 @@ if len(sd)!=0:
 #                             index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
 #                             install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
 #                             install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
+
+#                         except:
+#                             pass
+#             elif df_csv['so_type'][i]=='B'  and not np.isnan(df_csv['invoice_amt'][i]) :
+#                 if {'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])} not in install_data_column and storename[0]!=None:
+#                     try:
+                        
+#                         sales_data={
+#                         'store_id':df_csv['store_id'][i],
+#                         'invoice_amt':(float(df_csv['invoice_amt'][i])),
+#                         'total_customer':float(df_csv['custnumber'][i])*-1,
+#                         'DATE':date_segmentation(df_csv['so_date'][i])
+                        
+#                         }
+#                         store_data={
+#                             'store_id':df_csv['store_id'][i],
+#                             'brand':storename[0],
+#                             'store_name':storename[1]
+
+#                         }
+#                         install_store_data.append(store_data)
+#                         install_sales_data.append(sales_data)
+#                         columndata={'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])}
+#                         install_data_column.append(columndata)
+#                     except:
+#                         try:
+#                             sales_data={
+#                             'store_id':df_csv['store_id'][i],
+#                             'invoice_amt':(float(df_csv['invoice_amt'][i])),
+#                             'total_customer':float(df_csv['custnumber'][i]*-1),
+#                             'date':date_segmentation(df_csv['so_date'][i])
+                            
+#                             }
+#                             store_data={
+#                                 'store_id':df_csv['store_id'][i],
+#                                 'brand':storename[0],
+#                                 'store_name':storename[1]
+
+#                             }
+#                             install_store_data.append(store_data)
+#                             install_sales_data.append(sales_data)
+#                             columndata={'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])}
+#                             install_data_column.append(columndata)
+#                         except:
+#                             pass
+#                 else:
+#                     try:
+#                         index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
+#                         install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]))
+#                         install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+float(df_csv['custnumber'][i]*-1)
+
+#                     except:
+#                         try:
+#                             index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
+#                             install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]))
+#                             install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+float(df_csv['custnumber'][i]*-1)
 
 #                         except:
 #                             pass
