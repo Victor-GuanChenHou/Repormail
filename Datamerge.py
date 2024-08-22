@@ -166,7 +166,7 @@ if len(sd)!=0:
 #         try:    
 #             if df_csv['so_type'][i]=='A'  and not np.isnan(df_csv['invoice_amt'][i]):
 #                 storename=data_segmentation(df_csv['store_name'][i])
-#                 if {'store_id': df_csv['store_id'][i], 'date': df_csv['so_date'][i]} not in install_data_column and storename[0]!=None:
+#                 if {'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])} not in install_data_column and storename[0]!=None:
 #                     try:
                         
 #                         sales_data={
@@ -184,7 +184,7 @@ if len(sd)!=0:
 #                         }
 #                         install_store_data.append(store_data)
 #                         install_sales_data.append(sales_data)
-#                         columndata={'store_id': df_csv['store_id'][i], 'date': df_csv['so_date'][i]}
+#                         columndata={'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])}
 #                         install_data_column.append(columndata)
 #                     except:
 #                         try:
@@ -203,19 +203,19 @@ if len(sd)!=0:
 #                             }
 #                             install_store_data.append(store_data)
 #                             install_sales_data.append(sales_data)
-#                             columndata={'store_id': df_csv['store_id'][i], 'date': df_csv['so_date'][i]}
+#                             columndata={'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])}
 #                             install_data_column.append(columndata)
 #                         except:
 #                             pass
 #                 else:
 #                     try:
-#                         index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': df_csv['so_date'][i]})
+#                         index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
 #                         install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
 #                         install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
 
 #                     except:
 #                         try:
-#                             index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': df_csv['so_date'][i]})
+#                             index = install_data_column.index({'store_id': df_csv['store_id'][i], 'date': date_segmentation(df_csv['so_date'][i])})
 #                             install_sales_data[index]['invoice_amt']= install_sales_data[index]['invoice_amt']+(float(df_csv['invoice_amt'][i]*1))
 #                             install_sales_data[index]['total_customer']= install_sales_data[index]['total_customer']+1
 
