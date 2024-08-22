@@ -148,7 +148,7 @@ if len(sd)!=0:
                 smtp.login(username, password)
                 smtp.sendmail(from_addr, sendmember[j], msg.as_string())
 
-
+a
 ###存入多天資料
 
 # folder_path = "./Origianldata"
