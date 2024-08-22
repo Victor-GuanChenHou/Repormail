@@ -148,6 +148,7 @@ if len(sd)!=0:
                 smtp.login(username, password)
                 smtp.sendmail(from_addr, sendmember[j], msg.as_string())
 
+
 ###存入多天資料
 
 # folder_path = "./Origianldata"
@@ -224,4 +225,5 @@ if len(sd)!=0:
 #             pass
 #     MYSQL.insert_sales_data(install_sales_data)
 #     MYSQL.insert_store_data(install_store_data)
+
 
